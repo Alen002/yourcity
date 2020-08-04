@@ -18,11 +18,19 @@ app.listen(PORT, (err) => {
     console.log("Server listening on Port", PORT);
 });
 
+
+// Views path for finding the EJS templates
+app.set('views', path.join(__dirname, '/client/views'));
+
 // Test route
 app.get('/test', (req, res) => {         
     res.send('express is working');
 });
 
+// Rout for main page
+app.get('/', (req, res) => {
+    res.render('index.ejs');
+});
 
 
 
