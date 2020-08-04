@@ -27,9 +27,17 @@ app.get('/test', (req, res) => {
     res.send('express is working');
 });
 
-// Rout for main page
+// Route for the main page
 app.get('/', (req, res) => {
     res.render('index.ejs');
+});
+
+// Route for cities
+app.get('/cities', (req, res) => {
+    let cities = [
+        {city: 'city', country: 'country', img: 'https://cdn.pixabay.com/photo/2013/01/13/21/48/eiger-74848_960_720.jpg'}
+    ];
+    res.render('cities.ejs', {cities});
 });
 
 
