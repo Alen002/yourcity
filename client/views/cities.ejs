@@ -7,6 +7,13 @@
 </head>
 <body>
     Display cities
-    <%= cities[0].img  %>
+    <% cities.forEach((value, index) => { %>
+        <p>
+            <%= value.city %></br>
+            <%= value.country %></br>
+            <%= value.img %></br>
+        </p>
+    <% }) %>
+    
 </body>
 </html>
