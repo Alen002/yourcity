@@ -14,3 +14,11 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.listen(PORT);
+
+app.get('/test', (req, res) => {         
+    res.send('express is working');
+});
+
+
+
+
