@@ -1,0 +1,23 @@
+{
+  "name": "project_yourcity",
+  "version": "1.0.0",
+  "description": "yourcity",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alen002/yourcity.git"
+  },
+  "author": "Alen Klaric",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Alen002/yourcity/issues"
+  },
+  "homepage": "https://github.com/Alen002/yourcity#readme",
+  "dependencies": {
+    "ejs": "^3.1.3",
+    "express": "^4.17.1"
+  }
+}
