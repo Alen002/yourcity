@@ -13,8 +13,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 
-app.listen(PORT);
+app.listen(PORT, (err) => { 
+    if (err) console.log("Error in server setup"); 
+    console.log("Server listening on Port", PORT);
+});
 
+// Test route
 app.get('/test', (req, res) => {         
     res.send('express is working');
 });
