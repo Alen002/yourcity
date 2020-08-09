@@ -56,8 +56,8 @@ app.post('/cities', (req, res) => {
     cities.push(newCity);
 
     console.log(cities)
-    res.send('POST is working');
-
+    /* res.render('cities.ejs', {cities}); */
+    res.redirect('/cities');
 });
 
 
