@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(morgan('short')); 
 
 const bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({ extended: false })); 
+app.use(bodyParser.urlencoded({ extended: true })); 
 app.use(bodyParser.json());
 app.use(cors());
 
@@ -17,7 +17,6 @@ app.listen(PORT, (err) => {
     if (err) console.log("Error in server setup"); 
     console.log("Server listening on Port", PORT);
 });
-
 
 // Views path for finding the EJS templates
 app.set('views', path.join(__dirname, '/client/views'));
@@ -32,7 +31,7 @@ app.get('/', (req, res) => {
     res.render('index.ejs');
 });
 
-// Route for cities
+// Route for displaying cities
 app.get('/cities', (req, res) => {
     let cities = [
         {city: 'city', country: 'country', description: 'description 1', img: 'https://cdn.pixabay.com/photo/2013/01/13/21/48/eiger-74848_960_720.jpg'},
@@ -41,5 +40,14 @@ app.get('/cities', (req, res) => {
     res.render('cities.ejs', {cities});
 });
 
+// Route to display the page for entering a new city
+app.get('/cities/new', (req, res) => {
+    res.render('new.ejs');
+});
+
+// Route to post the city
+app.post('/cities', (req, res) => {
+    res.send('POST is working');
+});
 
 

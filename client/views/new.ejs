@@ -1,0 +1,10 @@
+<%- include("partials/header") %>
+    <h3>Add your favourite city</h3>
+    <form action="/cities" method="POST">
+        <input type="text" name="city_name" placeholder="city name" class="form-control mb-2">
+        <input type="text" name="country" placeholder="country" class="form-control mb-2">
+        <input type="text" name="image" placeholder="image url" class="form-control mb-2">
+        <button type="submit" class="btn btn-primary mb-2">Submit</button>
+    
+    </form>
+<%- include("partials/footer") %>
