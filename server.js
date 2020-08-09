@@ -52,12 +52,8 @@ app.post('/cities', (req, res) => {
     let city = req.body.city;
     let country = req.body.country;
     let image = req.body.image;
-
-    cities.push({
-        "city": city,
-        "country": country,
-        "image": image
-        });
+    let newCity = {city: city, country: country, image: image};
+    cities.push(newCity);
 
     console.log(cities)
     res.send('POST is working');
