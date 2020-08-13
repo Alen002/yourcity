@@ -2,11 +2,12 @@
 
     <a href="/cities/new">Add a new city</a></br>
     Display cities
-    <% cities.forEach((city) => { %>
+    <% cities.forEach((cities) => { %>
         <div>
-            <h2><%= city.city %></h2>
-            <h3><%= city.country %></h3>
-            <img src="<%= city.image %>">
+            <h2><%= cities.city %></h2>
+            <h2><%= cities.country %></h2>
+            <img src="<%= cities.image %>">
+         
         </div>
     <% }) %>
     

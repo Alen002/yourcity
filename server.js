@@ -30,12 +30,6 @@ app.listen(PORT, (err) => {
 // Views path for finding the EJS templates
 app.set('views', path.join(__dirname, '/client/views'));
 
-// Array in which data inputed by the user is saved
-let cities = [
-    {city: 'city', country: 'country', image: 'https://cdn.pixabay.com/photo/2013/01/13/21/48/eiger-74848_960_720.jpg'},
-    {city: 'city2', country: 'USA', image: 'https://cdn.pixabay.com/photo/2016/12/15/07/54/horseshoe-bend-1908283__340.jpg'}
-]; 
-
 // Test route
 app.get('/test', (req, res) => {         
     res.send('express is working');
@@ -46,9 +40,17 @@ app.get('/', (req, res) => {
     res.render('index.ejs');
 });
 
-// Route for displaying cities
-app.get('/cities', (req, res) => {
-    res.render('cities.ejs', {cities});
+// Route for retrieving and displaying city collections in City from mongodb
+app.get('/cities', async(req, res) => {
+    try {
+        const cities = await City.find();
+        console.log(cities);
+        res.render('cities.ejs', {cities})
+    }
+    catch(err) {
+    res.send('Cound not retrieve data');        
+    }
+    
 });
 
 // Route to display the page for entering a new city
@@ -56,10 +58,12 @@ app.get('/cities/new', (req, res) => {
     res.render('new.ejs');
 });
 
+// Save data to mongodb
 app.post('/cities', async(req, res) => {
     const city = new City ({
         city: req.body.city,
-        country: req.body.country
+        country: req.body.country,
+        image: req.body.image
     });
 
     try {
@@ -69,5 +73,4 @@ app.post('/cities', async(req, res) => {
     catch(err) {
         res.send('Error: Could not save city');
     }
-
 });
