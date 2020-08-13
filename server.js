@@ -4,10 +4,12 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const app = express();
-const mongoose = require('mongoose');
+const City = require('./models/city');
 
 // MongoDb and mongoose
-mongoose.connect('mongodb://localhost/yourcity', { useUnifiedTopology: true, useNewUrlParser: true });
+const mongoose = require('mongoose');
+const url = 'mongodb://localhost/CityDB'
+mongoose.connect(url, { useUnifiedTopology: true, useNewUrlParser: true });
 const con = mongoose.connection;
 con.on('open', () => console.log('Connected to mongodb'));
 
@@ -32,7 +34,7 @@ app.set('views', path.join(__dirname, '/client/views'));
 let cities = [
     {city: 'city', country: 'country', image: 'https://cdn.pixabay.com/photo/2013/01/13/21/48/eiger-74848_960_720.jpg'},
     {city: 'city2', country: 'USA', image: 'https://cdn.pixabay.com/photo/2016/12/15/07/54/horseshoe-bend-1908283__340.jpg'}
-];
+]; 
 
 // Test route
 app.get('/test', (req, res) => {         
@@ -54,17 +56,18 @@ app.get('/cities/new', (req, res) => {
     res.render('new.ejs');
 });
 
-// Route to post the city to the server and save it to the cities array
-app.post('/cities', (req, res) => {
-    let city = req.body.city;
-    let country = req.body.country;
-    let image = req.body.image;
-    let newCity = {city: city, country: country, image: image};
-    cities.push(newCity);
+app.post('/cities', async(req, res) => {
+    const city = new City ({
+        city: req.body.city,
+        country: req.body.country
+    });
 
-    console.log(cities)
-    /* res.render('cities.ejs', {cities}); */
-    res.redirect('/cities');
+    try {
+        const addData = await city.save();
+        res.json(addData);
+    }
+    catch(err) {
+        res.send('Error: Could not save city');
+    }
+
 });
-
-
