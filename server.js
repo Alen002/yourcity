@@ -4,6 +4,13 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const app = express();
+const mongoose = require('mongoose');
+
+// MongoDb and mongoose
+mongoose.connect('mongodb://localhost/yourcity', { useUnifiedTopology: true, useNewUrlParser: true });
+const con = mongoose.connection;
+con.on('open', () => console.log('Connected to mongodb'));
+
 
 app.use(express.json());
 app.use(morgan('short')); 
