@@ -15,7 +15,8 @@ const citySchema = new mongoose.Schema({
         required: false
     },
     description: {
-        
+        type: String,
+        required: false
     }
 });
 
