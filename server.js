@@ -30,11 +30,6 @@ app.listen(PORT, (err) => {
 // Views path for finding the EJS templates
 app.set('views', path.join(__dirname, '/client/views'));
 
-// Test route
-app.get('/test', (req, res) => {         
-    res.send('express is working');
-});
-
 // Route for the main page
 app.get('/', (req, res) => {
     res.render('index.ejs');
@@ -53,11 +48,6 @@ app.get('/cities', async(req, res) => {
     
 });
 
-// Route to display the page for entering a new city
-app.get('/cities/new', (req, res) => {
-    res.render('new.ejs');
-});
-
 // Save data to mongodb
 app.post('/cities', async(req, res) => {
     const city = new City ({
@@ -74,3 +64,13 @@ app.post('/cities', async(req, res) => {
         res.send('Error: Could not save city');
     }
 });
+
+// Route to display the page for entering a new city
+app.get('/cities/new', (req, res) => {
+    res.render('new.ejs');
+});
+
+/* app.get('cities/show', (req, res) => {
+    res.render('show.ejs');
+
+}); */
