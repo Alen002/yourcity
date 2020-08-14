@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const { text } = require('body-parser');
 mongoose.set('useCreateIndex', true);
 
-
 // Schema for city
 const citySchema = new mongoose.Schema({
     city: {
@@ -23,7 +22,6 @@ const citySchema = new mongoose.Schema({
     }
 });
 
-citySchema.index({ city: "text", description: "text",});
+citySchema.index({ city: "text", country: "text", image: "text", description: "text"});
     
-
 module.exports = mongoose.model('City', citySchema);
