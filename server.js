@@ -78,14 +78,13 @@ app.get('/cities/search', (req, res) => {
 
 // Retrieve and display city based by user input
 app.post('/cities/search', async (req, res) => {
-    /* let city = req.body.city; */
+    let city = req.body.city;
     try {
-        const citySearch = await City.find();  
+        const citySearch = await City.find({city: `${city}`});  
         
         res.render('search.ejs', {citySearch});
     }
     catch(err) {
         res.send('There has been an error');
     }
-
 });
