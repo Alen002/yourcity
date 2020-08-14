@@ -53,7 +53,8 @@ app.post('/cities', async (req, res) => {
     const city = new City ({
         city: req.body.city,
         country: req.body.country,
-        image: req.body.image
+        image: req.body.image,
+        description: req.body.description
     });
 
     try {
@@ -80,8 +81,7 @@ app.get('/cities/search', (req, res) => {
 app.post('/cities/search', async (req, res) => {
     let city = req.body.city;
     try {
-        const citySearch = await City.find({city: `${city}`});  
-        
+        const citySearch = await City.find({city: city}); 
         res.render('search.ejs', {citySearch});
     }
     catch(err) {
