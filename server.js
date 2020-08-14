@@ -49,7 +49,7 @@ app.get('/cities', async(req, res) => {
 });
 
 // Save data to mongodb
-app.post('/cities', async(req, res) => {
+app.post('/cities', async (req, res) => {
     const city = new City ({
         city: req.body.city,
         country: req.body.country,
@@ -70,7 +70,22 @@ app.get('/cities/new', (req, res) => {
     res.render('new.ejs');
 });
 
-/* app.get('cities/show', (req, res) => {
-    res.render('show.ejs');
+// Display form to search for city
+app.get('/cities/search', (req, res) => {
+    let citySearch = [];
+    res.render('search.ejs', {citySearch});
+});
 
-}); */
+// Retrieve and display city based by user input
+app.post('/cities/search', async (req, res) => {
+    /* let city = req.body.city; */
+    try {
+        const citySearch = await City.find();  
+        
+        res.render('search.ejs', {citySearch});
+    }
+    catch(err) {
+        res.send('There has been an error');
+    }
+
+});

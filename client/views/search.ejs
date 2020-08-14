@@ -1,0 +1,26 @@
+<%- include("partials/header") %>
+
+
+<h3>Search for a city</h3>    
+        <form action="/cities/search" method="POST">
+            <input type="text" name="city" placeholder="city name" class="form-control mb-2">
+            <a href="/" class="btn btn-secondary mb-2">Cancel</a>
+            <button type="submit" class="btn btn-primary mb-2">Submit</button>
+        </form>
+    </div>
+    <% citySearch.forEach((cities) => { %>
+        <div>
+            <h2><%= cities.city %></h2>
+            <h2><%= cities.country %></h2>
+            <img src="<%= cities.image %>">
+        </div>
+    <% }) %>
+    
+
+
+
+    <a href="/cities">Back</a>
+    
+    
+
+<%- include("partials/footer") %>
