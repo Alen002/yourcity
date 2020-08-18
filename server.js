@@ -81,10 +81,19 @@ app.get('/cities/new', (req, res) => {
 });
 
 // SHOW - Display details of a city
-app.get('/cities/:id', (req, res) => {
-    res.render('show.ejs');
+app.get('/cities/:id', async (req, res) => {
+    let object_d = req.params.id;
+    try {
+        const cities = await City.find({_id: object_d})
+        console.log(cities);
+        res.render('show.ejs', {cities})
+    }
+    catch(err) {
+    res.send('Cound not retrieve data');        
+    }
+    
 });
-
+    
 // Display form to search for city
 app.get('/cities/search', (req, res) => {
     let citySearch = [];

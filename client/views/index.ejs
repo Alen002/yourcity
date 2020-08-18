@@ -7,8 +7,10 @@
             <h2><%= cities.city %></h2>
             <h2><%= cities.country %></h2>
             <img src="<%= cities.image %>">
-            <button><a href="/cities/show">Show Details</a></button>
             <p><%= cities.description %></p>
+            <div>
+                <a href="/cities/<%= cities._id %>" class="btn btn-primary">More Details</a>
+            </div>
         </div>
     <% }) %>
     
