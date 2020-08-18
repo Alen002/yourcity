@@ -19,9 +19,10 @@ app.use(express.json());
 app.use(morgan('short')); 
 app.use(express.static('client'));
 
+// SASS middleware
 app.use(sassMiddleware({
     src: path.join(__dirname, '/client/styles'), // source directory to read the sass files from
-    dest: path.join(__dirname, '/client'), // write the generated sass files
+    dest: path.join(__dirname, '/client/styles'), // write the generated sass files
 }));
 
 // Views path for finding the EJS templates
