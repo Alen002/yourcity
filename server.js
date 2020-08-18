@@ -41,7 +41,7 @@ app.listen(PORT, (err) => {
 
 // Route for the main page
 app.get('/', (req, res) => {
-    res.render('index.ejs');
+    res.render('main.ejs');
 });
 
 // INDEX - Display all city collections from the db
@@ -49,7 +49,7 @@ app.get('/cities', async(req, res) => {
     try {
         const cities = await City.find();
         console.log(cities);
-        res.render('cities.ejs', {cities})
+        res.render('index.ejs', {cities})
     }
     catch(err) {
     res.send('Cound not retrieve data');        
@@ -82,8 +82,7 @@ app.get('/cities/new', (req, res) => {
 
 // SHOW - Display details of a city
 app.get('/cities/:id', (req, res) => {
-    res.send('THis is the SHOW DETAILS');
-
+    res.render('show.ejs');
 });
 
 // Display form to search for city
