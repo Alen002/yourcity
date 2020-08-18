@@ -22,7 +22,7 @@ app.use(express.static('client'));
 // SASS middleware
 app.use(sassMiddleware({
     src: path.join(__dirname, '/client/styles'), // source directory to read the sass files from
-    dest: path.join(__dirname, '/client/styles'), // write the generated sass files
+    dest: path.join(__dirname, '/client/styles'), // write the generated sass files into the styles folder
 }));
 
 // Views path for finding the EJS templates
@@ -44,7 +44,7 @@ app.get('/', (req, res) => {
     res.render('index.ejs');
 });
 
-// Route for retrieving and displaying city collections in City from mongodb
+// INDEX - Display all city collections from the db
 app.get('/cities', async(req, res) => {
     try {
         const cities = await City.find();
@@ -57,7 +57,7 @@ app.get('/cities', async(req, res) => {
     
 });
 
-// Save data to mongodb
+// CREATE - add new city to db
 app.post('/cities', async (req, res) => {
     const city = new City ({
         city: req.body.city,
@@ -75,18 +75,15 @@ app.post('/cities', async (req, res) => {
     }
 });
 
-/* app.get('/cities/show/:id', async (req, res) => {
-    try {
-        
-    }
-
-
-
-}); */
-
-// Route to display the page for entering a new city
+// NEW - Display form to create a new city
 app.get('/cities/new', (req, res) => {
     res.render('new.ejs');
+});
+
+// SHOW - Display details of a city
+app.get('/cities/:id', (req, res) => {
+    res.send('THis is the SHOW DETAILS');
+
 });
 
 // Display form to search for city

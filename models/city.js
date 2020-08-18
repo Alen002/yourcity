@@ -22,6 +22,7 @@ const citySchema = new mongoose.Schema({
     }
 });
 
+// Enable text based search 
 citySchema.index({ city: "text", country: "text", image: "text", description: "text"});
     
 module.exports = mongoose.model('City', citySchema);
