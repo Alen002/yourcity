@@ -1,9 +1,10 @@
-var path = require('path');
 const PORT = 5000;
+var path = require('path');
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const app = express();
+const sassMiddleware = require('node-sass-middleware');
 const City = require('./models/city');
 
 // MongoDb and mongoose
@@ -16,6 +17,15 @@ con.on('open', () => console.log('Connected to mongodb'));
 
 app.use(express.json());
 app.use(morgan('short')); 
+app.use(express.static('client'));
+
+app.use(sassMiddleware({
+    src: path.join(__dirname, '/client/styles'), // source directory to read the sass files from
+    dest: path.join(__dirname, '/client'), // write the generated sass files
+}));
+
+// Views path for finding the EJS templates
+app.set('views', path.join(__dirname, '/client/views'));
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true })); 
@@ -27,8 +37,6 @@ app.listen(PORT, (err) => {
     console.log("Server listening on Port", PORT);
 });
 
-// Views path for finding the EJS templates
-app.set('views', path.join(__dirname, '/client/views'));
 
 // Route for the main page
 app.get('/', (req, res) => {
