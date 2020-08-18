@@ -66,6 +66,15 @@ app.post('/cities', async (req, res) => {
     }
 });
 
+/* app.get('/cities/show/:id', async (req, res) => {
+    try {
+        
+    }
+
+
+
+}); */
+
 // Route to display the page for entering a new city
 app.get('/cities/new', (req, res) => {
     res.render('new.ejs');
