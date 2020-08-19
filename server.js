@@ -80,20 +80,7 @@ app.get('/cities/new', (req, res) => {
     res.render('new.ejs');
 });
 
-// SHOW - Display details of a city
-app.get('/cities/:id', async (req, res) => {
-    try {
-        const cities = await City.findById(req.params.id);
-        console.log(cities);
-        res.render('show.ejs', {cities})
-    }
-    catch(err) {
-    res.send('Cound not retrieve data');        
-    }
-    
-});
-    
-// Display form to search for city
+// Display form to search for cities
 app.get('/cities/search', (req, res) => {
     let citySearch = [];
     res.render('search.ejs', {citySearch});
@@ -110,4 +97,18 @@ app.post('/cities/search', async (req, res) => {
         res.send('There has been an error');
     }
 });
+
+// SHOW - Display details of a city
+app.get('/cities/:id', async (req, res) => {
+    try {
+        const cities = await City.findById(req.params.id);
+        console.log(cities);
+        res.render('show.ejs', {cities})
+    }
+    catch(err) {
+        res.send('Cound not retrieve data');        
+    }
+    
+});
+    
 
