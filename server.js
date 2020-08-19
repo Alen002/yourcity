@@ -82,9 +82,8 @@ app.get('/cities/new', (req, res) => {
 
 // SHOW - Display details of a city
 app.get('/cities/:id', async (req, res) => {
-    let object_d = req.params.id;
     try {
-        const cities = await City.find({_id: object_d})
+        const cities = await City.findById(req.params.id);
         console.log(cities);
         res.render('show.ejs', {cities})
     }
