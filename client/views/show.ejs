@@ -1,7 +1,10 @@
 <%- include("partials/header") %>
 This is the Show Details Page
 
-<%= cities.description%>
-
+<h2><%= cities.city %></h2>
+<h2><%= cities.country %></h2>
+<img src="<%= cities.image %>">
+<p><%= cities.description %></p>
+<a href="/cities">Back to cities</a>
 
 <%- include("partials/footer") %>

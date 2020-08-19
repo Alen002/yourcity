@@ -1,6 +1,7 @@
 const PORT = 5000;
 var path = require('path');
 const express = require('express');
+methodOverride = require('method-override');
 const morgan = require('morgan');
 const cors = require('cors');
 const app = express();
@@ -18,6 +19,7 @@ con.on('open', () => console.log('Connected to mongodb'));
 app.use(express.json());
 app.use(morgan('short')); 
 app.use(express.static('client'));
+app.use(methodOverride('_method')); // Argument for passing argument, eg. PUT, DELETE
 
 // SASS middleware
 app.use(sassMiddleware({
@@ -110,5 +112,12 @@ app.get('/cities/:id', async (req, res) => {
     }
     
 });
-    
+  
+// PUT
+app.get('/put', (req, res) => {
+    res.render('put.ejs');
+});
 
+app.put('/put', (req, res) => {
+    res.send('This will be the put request');
+});

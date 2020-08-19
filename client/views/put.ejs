@@ -1,0 +1,16 @@
+<%- include("partials/header") %>
+    
+    <div class="container">
+        <h3>Add your favourite city</h3>    
+        <form action="/put/?_method=PUT" method="POST">
+            <!-- <input type="text" name="city" placeholder="city name" class="form-control mb-2">
+            <input type="text" name="country" placeholder="country" class="form-control mb-2">
+            <input type="text" name="image" placeholder="image url" class="form-control mb-2">
+            <input type="text" name="description" placeholder="description" class="form-control mb-2"> -->
+            <a href="/" class="btn btn-secondary mb-2">Cancel</a>
+            <button type="submit" class="btn btn-primary mb-2">Submit</button>
+        </form>
+    </div>
+    <a href="/cities">Back</a>
+
+<%- include("partials/footer") %>
