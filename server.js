@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const app = express();
 const sassMiddleware = require('node-sass-middleware');
+const expressSanitizer = require('express-sanitizer');
 const City = require('./models/city');
 
 // MongoDb and mongoose
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use(morgan('short')); 
 app.use(express.static('client'));
 app.use(methodOverride('_method')); // for passing argument, eg. PUT, DELETE
+app.use(expressSanitizer());
 
 // SASS middleware
 app.use(sassMiddleware({
@@ -55,17 +57,16 @@ app.get('/cities', async(req, res) => {
     }
     catch(err) {
     res.send('Cound not retrieve data');        
-    }
-    
+    }  
 });
 
 // CREATE - add new city to db
 app.post('/cities', async (req, res) => {
     const city = new City ({
-        city: req.body.city,
-        country: req.body.country,
-        image: req.body.image,
-        description: req.body.description
+        city: req.body.city= req.sanitize(req.body.city),
+        country: req.body.country = req.sanitize(req.body.country),
+        image: req.body.image = req.sanitize(req.body.image),
+        description: req.body.description = req.sanitize(req.body.description)
     });
 
     try {
@@ -110,20 +111,10 @@ app.get('/cities/:id', async (req, res) => {
     }
     catch(err) {
         res.send('Cound not retrieve data');        
-    }
-    
+    }   
 });
   
-// UPDATE
-app.get('/put', (req, res) => {
-    res.render('put.ejs');
-});
-
-app.put('/put', (req, res) => {
-    res.send('This will be the put request');
-});
-
-// DELETE
+// DELETE - Delete city 
 app.delete('/cities/:id', async (req, res) => {
     try {
         const cities = await City.findByIdAndDelete(req.params.id)
@@ -132,6 +123,15 @@ app.delete('/cities/:id', async (req, res) => {
     catch(err) {
         res.send('Could not delete data');
     }  
+});
+
+// UPDATE
+app.get('/put', (req, res) => {
+    res.render('put.ejs');
+});
+
+app.put('/put', (req, res) => {
+    res.send('This will be the put request');
 });
 
 
