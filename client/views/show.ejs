@@ -5,6 +5,12 @@ This is the Show Details Page
 <h2><%= cities.country %></h2>
 <img src="<%= cities.image %>">
 <p><%= cities.description %></p>
+<p><%= cities._id %></p>
 <a href="/cities">Back to cities</a>
+
+<!-- DELETE data entry -->
+<form action="/cities/<%= cities._id %>?_method=DELETE" method="POST">
+    <button class="btn btn-danger mb-2">DELETE CITY</button>
+</form>
 
 <%- include("partials/footer") %>

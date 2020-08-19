@@ -19,7 +19,7 @@ con.on('open', () => console.log('Connected to mongodb'));
 app.use(express.json());
 app.use(morgan('short')); 
 app.use(express.static('client'));
-app.use(methodOverride('_method')); // Argument for passing argument, eg. PUT, DELETE
+app.use(methodOverride('_method')); // for passing argument, eg. PUT, DELETE
 
 // SASS middleware
 app.use(sassMiddleware({
@@ -100,6 +100,7 @@ app.post('/cities/search', async (req, res) => {
     }
 });
 
+
 // SHOW - Display details of a city
 app.get('/cities/:id', async (req, res) => {
     try {
@@ -113,7 +114,7 @@ app.get('/cities/:id', async (req, res) => {
     
 });
   
-// PUT
+// UPDATE
 app.get('/put', (req, res) => {
     res.render('put.ejs');
 });
@@ -121,3 +122,17 @@ app.get('/put', (req, res) => {
 app.put('/put', (req, res) => {
     res.send('This will be the put request');
 });
+
+// DELETE
+app.delete('/cities/:id', async (req, res) => {
+    try {
+        const cities = await City.findByIdAndDelete(req.params.id)
+        res.render('main.ejs');
+    }
+    catch(err) {
+        res.send('Could not delete data');
+    }  
+});
+
+
+
