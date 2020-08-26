@@ -34,6 +34,7 @@ app.set('views', path.join(__dirname, '/client/views'));
 
 const bodyParser = require('body-parser');
 const { reset } = require('nodemon');
+const { resourceUsage } = require('process');
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.use(bodyParser.json());
 app.use(cors());
@@ -150,8 +151,7 @@ app.put('/update/:id', async (req, res) => {
 
         const cities = await City.find();
         console.log(cities);
-        res.render('index.ejs', {cities})
-        
+        res.render('index.ejs', {cities});
     }
     catch(err) {
         res.send('Something went wrong');

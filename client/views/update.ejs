@@ -6,7 +6,7 @@
             <input type="text" name="city" placeholder="city name" class="form-control mb-2" value="<%= cities.city %>">
             <input type="text" name="country" placeholder="country" class="form-control mb-2" value="<%= cities.country %>">
             <input type="text" name="image" placeholder="image" class="form-control mb-2" value="<%= cities.image %>">
-            <input type="text" name="description" placeholder="description" class="form-control mb-2" value="<%= cities.description %>">
+            <textarea class="form-control" type="text" name="description"><%= cities.description %></textarea></br>
             <a href="/" class="btn btn-secondary mb-2">Cancel</a>
             <button type="submit" class="btn btn-primary mb-2">Submit</button>
         </form>
