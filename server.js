@@ -33,6 +33,7 @@ app.use(sassMiddleware({
 app.set('views', path.join(__dirname, '/client/views'));
 
 const bodyParser = require('body-parser');
+const { reset } = require('nodemon');
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.use(bodyParser.json());
 app.use(cors());
@@ -125,13 +126,33 @@ app.delete('/cities/:id', async (req, res) => {
     }  
 });
 
-// UPDATE
-app.get('/put', (req, res) => {
-    res.render('put.ejs');
+// EDIT - Display edit form for a city
+app.get('/cities/:id/edit', async (req, res) => {
+    try {
+        const cities = await City.findById(req.params.id);
+        console.log(cities);
+        res.render('update.ejs', {cities});
+    } 
+    catch(err) {
+        res.send('Something went wrong');
+    }
 });
 
-app.put('/put', (req, res) => {
-    res.send('This will be the put request');
+// UPDATE - After changes update/save changes for a city
+app.put('/update/:id', async (req, res) => {
+    try {
+        const cities = await City.findByIdAndUpdate(req.params.id, {
+            city: req.body.city= req.sanitize(req.body.city),
+            country: req.body.country = req.sanitize(req.body.country),
+            image: req.body.image = req.sanitize(req.body.image),
+            description: req.body.description = req.sanitize(req.body.description)
+        });
+        console.log(cities.city);
+        res.send('City has been updated succesfully');
+    }
+    catch(err) {
+        res.send('Something went wrong');
+    }
 });
 
 

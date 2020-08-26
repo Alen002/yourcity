@@ -13,4 +13,11 @@ This is the Show Details Page
     <button class="btn btn-danger mb-2">DELETE CITY</button>
 </form>
 
+<!-- UPDATE data entry -->
+<form action="/cities/<%= cities._id %>/edit" method="GET">
+    <button class="btn btn-secondary mb-2">UPDATE CITY</button>
+</form>
+
+
+
 <%- include("partials/footer") %>
