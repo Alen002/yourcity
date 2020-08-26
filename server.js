@@ -141,14 +141,17 @@ app.get('/cities/:id/edit', async (req, res) => {
 // UPDATE - After changes update/save changes for a city
 app.put('/update/:id', async (req, res) => {
     try {
-        const cities = await City.findByIdAndUpdate(req.params.id, {
+        const update = await City.findByIdAndUpdate(req.params.id, {
             city: req.body.city= req.sanitize(req.body.city),
             country: req.body.country = req.sanitize(req.body.country),
             image: req.body.image = req.sanitize(req.body.image),
             description: req.body.description = req.sanitize(req.body.description)
         });
-        console.log(cities.city);
-        res.send('City has been updated succesfully');
+
+        const cities = await City.find();
+        console.log(cities);
+        res.render('index.ejs', {cities})
+        
     }
     catch(err) {
         res.send('Something went wrong');
