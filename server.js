@@ -8,6 +8,7 @@ const app = express();
 const sassMiddleware = require('node-sass-middleware');
 const expressSanitizer = require('express-sanitizer');
 const City = require('./models/city');
+const Comment = require('./models/comment');
 
 // MongoDb and mongoose
 const mongoose = require('mongoose');
@@ -21,7 +22,7 @@ app.use(express.json());
 app.use(morgan('short')); 
 app.use(express.static('client'));
 app.use(methodOverride('_method')); // for passing argument, eg. PUT, DELETE
-app.use(expressSanitizer());
+app.use(expressSanitizer()); // for avoiding script injections
 
 // SASS middleware
 app.use(sassMiddleware({

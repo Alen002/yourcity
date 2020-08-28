@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 const { text } = require('body-parser');
 mongoose.set('useCreateIndex', true);
+const Comment = require('comment');
+
+
 
 // Schema for city
 const citySchema = new mongoose.Schema({
