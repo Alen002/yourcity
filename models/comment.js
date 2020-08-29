@@ -16,8 +16,7 @@ const commentSchema = new mongoose.Schema({
     comment: {
         type: String,
         required: true
-    }
-      
+    }      
 });
 
 // Enable text based search 

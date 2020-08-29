@@ -9,6 +9,7 @@ const sassMiddleware = require('node-sass-middleware');
 const expressSanitizer = require('express-sanitizer');
 const City = require('./models/city');
 const Comment = require('./models/comment');
+const seed = require('./models/seeds'); // seeds.js file will run when the server starts
 
 // MongoDb and mongoose
 const mongoose = require('mongoose');
@@ -44,7 +45,6 @@ app.listen(PORT, (err) => {
     if (err) console.log("Error in server setup"); 
     console.log("Server listening on Port", PORT);
 });
-
 
 // Route for the main page
 app.get('/', (req, res) => {
@@ -103,7 +103,6 @@ app.post('/cities/search', async (req, res) => {
         res.send('There has been an error');
     }
 });
-
 
 // SHOW - Display details of a city
 app.get('/cities/:id', async (req, res) => {
