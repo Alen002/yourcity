@@ -22,7 +22,13 @@ const citySchema = new mongoose.Schema({
     description: {
         type: String,
         required: false,
-    }
+    },
+    comments: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Comment"
+        }
+    ]
 });
 
 // Enable text based search 
