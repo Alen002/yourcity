@@ -11,6 +11,9 @@ const City = require('./models/city');
 const Comment = require('./models/comment');
 const seed = require('./models/seeds'); // seeds.js file will run when the server starts
 
+seed();
+
+
 // MongoDb and mongoose
 const mongoose = require('mongoose');
 const url = 'mongodb://localhost/CityDB'

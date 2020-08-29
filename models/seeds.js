@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
-const City = require('../models/city');
-const Comment = require('../models/comment');
-const { GridFSBucketWriteStream } = require('mongodb');
-
+const City = require('./city');
+const Comment = require('./comment');
 
 
 const cities = [
@@ -35,20 +33,34 @@ const cities = [
 
 const comments = [
     new Comment ({
-        user: 'kdflgjdfklgjdsklfgjdfksl',
-        comment: 'kdflgjdfklgjdfklgjdfkl' 
+        user: 'Alen',
+        comment: 'Nice City' 
     }),
     new Comment ({
-        user: 'kdflgjdfklgjdsklfgjdfksl',
-        comment: 'kdflgjdfklgjdfklgjdfkl' 
+        user: 'John',
+        comment: 'Can recommend' 
     })
 ];
 
 // Populate collections cities and comments with documents
-cities.forEach((city) => {
-    city.save();
-});
+const seeding = () => {
+    cities.forEach((city) => {
+        city.save();
+    });
+    comments.forEach((comment) => {
+        comment.save();
+    });
+};
 
-comments.forEach((comment) => {
-    comment.save();
-});
+const seed = async () => {
+    try {
+        await City.deleteMany({});
+        await Comment.deleteMany({});
+        seeding();
+
+    } catch(err) {
+        console.log('Seeding dit not work');
+    }
+};
+
+module.exports = seed;
