@@ -1,0 +1,10 @@
+<%- include("partials/header") %>
+<h3>All Comments</h3>
+
+    <% comments.forEach((comment) => { %>
+        <%= comment.date  %></br>  
+        <%= comment.user  %></br>     
+        <%= comment.comment %></br>        
+    <% }) %>
+
+<%- include("partials/footer") %>

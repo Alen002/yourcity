@@ -164,8 +164,8 @@ app.put('/update/:id', async (req, res) => {
 // Show all comments
 app.get('/comments', async (req, res) => {
     try {
-        const showComments = await Comment.find();
-        res.send(showComments);
+        const comments = await Comment.find();
+        res.render('comments.ejs', {comments});
         
     }catch(err) {
         console.log('Cannot display comments');
