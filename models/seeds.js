@@ -39,7 +39,11 @@ const comments = [
     new Comment ({
         user: 'John',
         comment: 'Can recommend' 
-    })
+    }),
+    new Comment ({
+        user: 'Date',
+        comment: 'Can recommend' 
+    }),
 ];
 
 // Populate collections cities and comments with documents

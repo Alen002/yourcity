@@ -23,7 +23,7 @@ const citySchema = new mongoose.Schema({
         type: String,
         required: false,
     },
-
+    // object referencing to Comment schema
     comments: [
         {
             type: mongoose.Schema.Types.ObjectId,

@@ -5,9 +5,9 @@ mongoose.set('useCreateIndex', true);
 // Schema for user comments
 const commentSchema = new mongoose.Schema({
     
-    time: { 
+    date: { 
         type: Number, 
-        default: (new Date()).getTime() 
+        default: new Date()
     }, 
     user: {
         type: String,
