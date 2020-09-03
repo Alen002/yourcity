@@ -176,3 +176,12 @@ app.get('/comments', async (req, res) => {
     }
 });
 
+// NEW - Display form for entering a new comment
+app.get('/cities/:id/comments/new', (req, res) => {
+    res.render('comments.ejs');
+});
+
+// CREATE - Create a new comment and save it to the db
+app.post('/cities/:id/comments', (req, res) => {
+    res.send('this is the comments post request');
+});

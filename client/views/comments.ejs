@@ -1,10 +1,14 @@
 <%- include("partials/header") %>
-<h3>All Comments</h3>
 
-    <% comments.forEach((comment) => { %>
-        <%= comment.date  %></br>  
-        <%= comment.user  %></br>     
-        <%= comment.comment %></br>        
-    <% }) %>
+    <div class="container">
+        <h3>Please enter comment for city</h3>    
+        <form action="/cities/comments" method="POST">
+            <input type="text" name="user" placeholder="Your name" class="form-control mb-2">
+            <textarea class="form-control" type="text" name="comment" placeholder="Your comment..."></textarea></br>
+            <a href="/" class="btn btn-secondary mb-2">Cancel</a>
+            <button type="submit" class="btn btn-primary mb-2">Submit</button>
+        </form>
+    </div>
+    <a href="/cities">Back</a>
 
 <%- include("partials/footer") %>
