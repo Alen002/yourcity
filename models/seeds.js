@@ -7,7 +7,8 @@ const cities = [
     new City({
         city: 'New York',
         country: 'USA',
-        image: 'https://cdn.pixabay.com/photo/2016/10/28/13/09/usa-1777986_960_720.jpg' 
+        image: 'https://cdn.pixabay.com/photo/2016/10/28/13/09/usa-1777986_960_720.jpg',
+        comments: ['5f50b1d034bbd9085d17b7ee', '5f50be16ba139909c1634f87', '5f50be16ba139909c1634f88']  // manually added the id of the first commment 
     }),
     new City({
         city: 'Saigon',
@@ -56,6 +57,7 @@ const seeding = () => {
     });
 };
 
+// It needs to be async otherwise population of db will not work
 const seed = async () => {
     try {
         await City.deleteMany({});

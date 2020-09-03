@@ -5,7 +5,16 @@ This is the Show Details Page
 <h2><%= cities.country %></h2>
 <img src="<%= cities.image %>">
 <p><%= cities.description %></p>
-<p><%= cities._id %></p>
+<!-- Reference to comments model-->
+<p>
+    <% cities.comments.forEach((comment) => { %>
+        <p>
+            User: <%= comment.user %></br>
+            Comment: <%= comment.comment %></br>
+        </p>
+    <% }) %>
+</p>
+
 <a href="/cities">Back to cities</a>
 
 <!-- DELETE data entry -->
@@ -18,6 +27,9 @@ This is the Show Details Page
     <button class="btn btn-secondary mb-2">UPDATE CITY</button>
 </form>
 
-
+<!-- ADD new comment-->
+<form action="/cities/<%= cities._id %>/edit" method="GET">
+    <button class="btn btn-secondary mb-2">New Comment</button>
+</form>
 
 <%- include("partials/footer") %>

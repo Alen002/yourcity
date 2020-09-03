@@ -11,7 +11,8 @@ const City = require('./models/city');
 const Comment = require('./models/comment');
 const seed = require('./models/seeds'); // seeds.js file will run when the server starts
 
-seed();
+// If seeds is run then the id of the commments need to be added manually to the city array
+/* seed(); */
 
 
 // MongoDb and mongoose
@@ -110,9 +111,12 @@ app.post('/cities/search', async (req, res) => {
 // SHOW - Display details of a city
 app.get('/cities/:id', async (req, res) => {
     try {
-        const cities = await City.findById(req.params.id);
-        console.log(cities);
-        res.render('show.ejs', {cities})
+        const cities = await City.findById(req.params.id)
+            .populate('comments')
+            .exec((err, cities) => {
+                console.log(cities);
+                res.render('show.ejs', {cities})
+            }); 
     }
     catch(err) {
         res.send('Cound not retrieve data');        
