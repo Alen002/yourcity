@@ -61,7 +61,7 @@ app.get('/', (req, res) => {
 });
 
 // INDEX - Display all city collections from the db
-app.get('/cities', async(req, res) => {
+app.get('/cities', async (req, res) => {
     try {
         const cities = await City.find();
         console.log(cities);
@@ -174,7 +174,7 @@ app.put('/update/:id', async (req, res) => {
 app.get('/comments', async (req, res) => {
     try {
         const comments = await Comment.find();
-        res.render('comments.ejs', {comments});
+        res.json({comments});
         
     } 
     catch(err) {
@@ -210,20 +210,23 @@ app.get('/cities/:id/comments/new', async (req, res) => {
     }
 }); */
 
+
+
+
 app.post('/cities/:id/comments', async (req, res) => {
     const comment = new Comment ({
         user: req.body.user = req.sanitize(req.body.user),
         comment: req.body.comment = req.sanitize(req.body.comment)
     });
-
+    comment.save();
     try {
-        let addComments = await comment.save();
-        res.json(addComments);
+        const cities = await City.findById(req.params.id);
+        cities.comments.push(comment); 
+        cities.save();
+         
+        res.send(comment);
     } catch(err) {
         res.send('Something went wrong while trying to save the comment to the db');
     }
 
-   
-      
- 
-});
+}); 
