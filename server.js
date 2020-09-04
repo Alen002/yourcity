@@ -193,26 +193,7 @@ app.get('/cities/:id/comments/new', async (req, res) => {
     }
 });
 
-
-// CREATE - Create a new comment and save it to the db
-/* app.post('/cities/:id/comments', async (req, res) => {
-    const comment = new Comment ({
-        user: req.body.user = req.sanitize(req.body.user),
-        comment: req.body.comment = req.sanitize(req.body.comment)
-    });
-
-    try {
-        const addComments = await comment.save();
-        res.json(addComments);
-    } 
-    catch(err) {
-        res.send('Something wrong');
-    }
-}); */
-
-
-
-
+// CREATE - Create a new comment and push it to the related city
 app.post('/cities/:id/comments', async (req, res) => {
     const comment = new Comment ({
         user: req.body.user = req.sanitize(req.body.user),
@@ -224,9 +205,8 @@ app.post('/cities/:id/comments', async (req, res) => {
         cities.comments.push(comment); 
         cities.save();
          
-        res.send(comment);
+        res.redirect('/cities');
     } catch(err) {
         res.send('Something went wrong while trying to save the comment to the db');
     }
-
 }); 
