@@ -41,6 +41,7 @@ app.set('views', path.join(__dirname, '/client/views'));
 const bodyParser = require('body-parser');
 const { reset } = require('nodemon');
 const { resourceUsage } = require('process');
+const comment = require('./models/comment');
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.use(bodyParser.json());
 app.use(cors());
@@ -49,6 +50,10 @@ app.listen(PORT, (err) => {
     if (err) console.log("Error in server setup"); 
     console.log("Server listening on Port", PORT);
 });
+
+
+/**** START of ROUTES ****/
+
 
 // Route for the main page
 app.get('/', (req, res) => {
@@ -60,7 +65,7 @@ app.get('/cities', async(req, res) => {
     try {
         const cities = await City.find();
         console.log(cities);
-        res.render('index.ejs', {cities})
+        res.render('cities/index.ejs', {cities})
     }
     catch(err) {
     res.send('Cound not retrieve data');        
@@ -87,13 +92,13 @@ app.post('/cities', async (req, res) => {
 
 // NEW - Display form to create a new city
 app.get('/cities/new', (req, res) => {
-    res.render('new.ejs');
+    res.render('cities/new.ejs');
 });
 
 // Display form to search for cities
 app.get('/cities/search', (req, res) => {
     let citySearch = [];
-    res.render('search.ejs', {citySearch});
+    res.render('cities/search.ejs', {citySearch});
 });
 
 // Retrieve and display city based by user input
@@ -101,21 +106,21 @@ app.post('/cities/search', async (req, res) => {
     let city = req.body.searchCity;
     try {
         const citySearch = await City.find({$text: {$search: city}});
-        res.render('search.ejs', {citySearch});
+        res.render('cities/search.ejs', {citySearch});
     }
     catch(err) {
         res.send('There has been an error');
     }
 });
 
-// SHOW - Display details of a city
+// SHOW - Display details of a city and related user comments
 app.get('/cities/:id', async (req, res) => {
     try {
         const cities = await City.findById(req.params.id)
             .populate('comments')
             .exec((err, cities) => {
                 console.log(cities);
-                res.render('show.ejs', {cities})
+                res.render('cities/show.ejs', {cities})
             }); 
     }
     catch(err) {
@@ -139,7 +144,7 @@ app.get('/cities/:id/edit', async (req, res) => {
     try {
         const cities = await City.findById(req.params.id);
         console.log(cities);
-        res.render('update.ejs', {cities});
+        res.render('cities/update.ejs', {cities});
     } 
     catch(err) {
         res.send('Something went wrong');
@@ -158,7 +163,7 @@ app.put('/update/:id', async (req, res) => {
 
         const cities = await City.find();
         console.log(cities);
-        res.render('index.ejs', {cities});
+        res.render('cities/index.ejs', {cities});
     }
     catch(err) {
         res.send('Something went wrong');
@@ -171,17 +176,54 @@ app.get('/comments', async (req, res) => {
         const comments = await Comment.find();
         res.render('comments.ejs', {comments});
         
-    }catch(err) {
+    } 
+    catch(err) {
         console.log('Cannot display comments');
     }
 });
 
 // NEW - Display form for entering a new comment
-app.get('/cities/:id/comments/new', (req, res) => {
-    res.render('comments.ejs');
+app.get('/cities/:id/comments/new', async (req, res) => {
+    try {
+        const cities = await City.findById(req.params.id);
+        res.render('comments/new.ejs', {cities});
+    } 
+    catch(err) {
+        console.log('Something went wrong');
+    }
 });
 
+
 // CREATE - Create a new comment and save it to the db
-app.post('/cities/:id/comments', (req, res) => {
-    res.send('this is the comments post request');
+/* app.post('/cities/:id/comments', async (req, res) => {
+    const comment = new Comment ({
+        user: req.body.user = req.sanitize(req.body.user),
+        comment: req.body.comment = req.sanitize(req.body.comment)
+    });
+
+    try {
+        const addComments = await comment.save();
+        res.json(addComments);
+    } 
+    catch(err) {
+        res.send('Something wrong');
+    }
+}); */
+
+app.post('/cities/:id/comments', async (req, res) => {
+    const comment = new Comment ({
+        user: req.body.user = req.sanitize(req.body.user),
+        comment: req.body.comment = req.sanitize(req.body.comment)
+    });
+
+    try {
+        let addComments = await comment.save();
+        res.json(addComments);
+    } catch(err) {
+        res.send('Something went wrong while trying to save the comment to the db');
+    }
+
+   
+      
+ 
 });

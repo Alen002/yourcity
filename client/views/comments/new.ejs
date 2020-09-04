@@ -1,14 +1,16 @@
-<%- include("partials/header") %>
+<%- include("../partials/header") %>
 
     <div class="container">
-        <h3>Please enter comment for city</h3>    
-        <form action="/cities/comments" method="POST">
+        <h3>Please enter comment for <%= cities.city %></h3>    
+        <form action="/cities/<%= cities._id %>/comments" method="POST">
             <input type="text" name="user" placeholder="Your name" class="form-control mb-2">
             <textarea class="form-control" type="text" name="comment" placeholder="Your comment..."></textarea></br>
-            <a href="/" class="btn btn-secondary mb-2">Cancel</a>
+            <a href="/cities" class="btn btn-secondary mb-2">Cancel</a>
             <button type="submit" class="btn btn-primary mb-2">Submit</button>
         </form>
     </div>
     <a href="/cities">Back</a>
 
-<%- include("partials/footer") %>
+<%- include("../partials/footer") %>
+
+
