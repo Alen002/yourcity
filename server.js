@@ -9,7 +9,18 @@ const sassMiddleware = require('node-sass-middleware');
 const expressSanitizer = require('express-sanitizer');
 const City = require('./models/city');
 const Comment = require('./models/comment');
+const User = require('./models/user');
 const seed = require('./models/seeds'); // seeds.js file will run when the server starts
+
+// Modules for user authentification
+const expressSession = require('express-session');
+const connectMongo = require('connect-mongo');
+const passport = require('passport');
+const passportLocal = require('passport-local');
+const passportLocalMongoose = require('passport-local-mongoose');
+
+
+
 
 // If seeds is run then the id of the commments need to be added manually to the city array
 /* seed(); */
@@ -28,6 +39,7 @@ app.use(morgan('short'));
 app.use(express.static('client'));
 app.use(methodOverride('_method')); // for passing argument, eg. PUT, DELETE
 app.use(expressSanitizer()); // for avoiding script injections
+
 
 // SASS middleware
 app.use(sassMiddleware({
