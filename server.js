@@ -53,6 +53,9 @@ app.use(expressSession({
 app.use(passport.initialize());
 app.use(passport.session());
 
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 
 // SASS middleware
 app.use(sassMiddleware({
