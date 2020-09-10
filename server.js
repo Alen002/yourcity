@@ -238,3 +238,9 @@ app.post('/cities/:id/comments', async (req, res) => {
         res.send('Something went wrong while trying to save the comment to the db');
     }
 }); 
+
+// Authentification routes
+
+app.get('/signup', (req, res) => {
+    res.render('user/signup.ejs');
+});
