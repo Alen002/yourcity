@@ -7,24 +7,24 @@ const cors = require('cors');
 const app = express();
 const sassMiddleware = require('node-sass-middleware');
 const expressSanitizer = require('express-sanitizer');
+
+// Import mongodb models
 const City = require('./models/city');
 const Comment = require('./models/comment');
 const User = require('./models/user');
-const seed = require('./models/seeds'); // seeds.js file will run when the server starts
 
-// Modules for user authentification
+// seeds.js file will run when the server starts
+const seed = require('./models/seeds'); 
+
+// User authentification modules
 const expressSession = require('express-session');
 const connectMongo = require('connect-mongo');
 const passport = require('passport');
 const passportLocal = require('passport-local');
 const passportLocalMongoose = require('passport-local-mongoose');
 
-
-
-
 // If seeds is run then the id of the commments need to be added manually to the city array
 /* seed(); */
-
 
 // MongoDb and mongoose
 const mongoose = require('mongoose');
@@ -34,11 +34,24 @@ const con = mongoose.connection;
 con.on('open', () => console.log('Connected to mongodb'));
 
 
+
+
+
 app.use(express.json());
 app.use(morgan('short')); 
 app.use(express.static('client'));
 app.use(methodOverride('_method')); // for passing argument, eg. PUT, DELETE
 app.use(expressSanitizer()); // for avoiding script injections
+
+app.use(expressSession({
+    secret: 'Encoding the session',
+    resave: false, 
+    saveUninitialized: false
+
+}));
+// Initialize and session method needed for running passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 // SASS middleware
