@@ -2,15 +2,17 @@
     
     <div class="container">
         <h3>Please Sign Up</h3>    
-        <form action="/user" method="POST">
+        <form action="/signup" method="POST">
             <input type="text" name="username" placeholder="Your name" class="form-control mb-2"></br>
             <input type="text" name="email" placeholder="Your email" class="form-control mb-2"></br>
-            <input type="password" name="passwordd" placeholder="Enter a password" class="form-control mb-2"></br>
+            <input type="password" name="password" placeholder="Enter a password" class="form-control mb-2"></br>
             <a href="/" class="btn btn-secondary mb-2">Cancel</a>
             <button type="submit" class="btn btn-primary mb-2">Submit</button>
+            <p><%= error %></p>
         </form>
     </div>
     <a href="/">Back</a>
 
     <%- include("../partials/footer") %>
 
+ 

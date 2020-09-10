@@ -239,8 +239,24 @@ app.post('/cities/:id/comments', async (req, res) => {
     }
 }); 
 
-// Authentification routes
+/********* Authentification routes *********/
 
+// Signup Routes
 app.get('/signup', (req, res) => {
-    res.render('user/signup.ejs');
+    let error = '';
+    res.render('user/signup.ejs', {error});
+});
+
+app.post('/signup', (req,res) => {
+    let user = new User(req.body);
+    user.save((err) => {
+        if (err) {
+            let error = "Something bad happened! Please try again.";
+            if (err.code === 11000) {
+                error = "That email is already taken, please try another.";
+            }
+            return res.render("user/signup.ejs", { error: error });
+        }
+        res.redirect("/");
+      });
 });
