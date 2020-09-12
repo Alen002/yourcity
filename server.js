@@ -7,6 +7,7 @@ const cors = require('cors');
 const app = express();
 const sassMiddleware = require('node-sass-middleware');
 const expressSanitizer = require('express-sanitizer');
+const bcrypt = require('bcryptjs');
 
 // Import mongodb models
 const City = require('./models/city');
@@ -20,8 +21,9 @@ const seed = require('./models/seeds');
 const expressSession = require('express-session');
 const connectMongo = require('connect-mongo');
 const passport = require('passport');
-const passportLocal = require('passport-local');
+const LocalStrategy = require('passport-local').Strategy;
 const passportLocalMongoose = require('passport-local-mongoose');
+
 
 // If seeds is run then the id of the commments need to be added manually to the city array
 /* seed(); */
@@ -33,29 +35,26 @@ mongoose.connect(url, { useUnifiedTopology: true, useNewUrlParser: true });
 const con = mongoose.connection;
 con.on('open', () => console.log('Connected to mongodb'));
 
-
-
-
-
 app.use(express.json());
 app.use(morgan('short')); 
 app.use(express.static('client'));
 app.use(methodOverride('_method')); // for passing argument, eg. PUT, DELETE
 app.use(expressSanitizer()); // for avoiding script injections
 
-app.use(expressSession({
-    secret: 'Encoding the session',
-    resave: false, 
-    saveUninitialized: false
+app.use(require('express-session')
+    ({
+        secret: 'Do not tell anybody',
+        saveUninitialized: false,
+        resave: false
+    })
+);
 
-}));
-// Initialize and session method needed for running passport
-app.use(passport.initialize());
+ // Initialize and session method needed for running passport
+/* app.use(passport.initialize());
 app.use(passport.session());
-
+passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
-
+passport.deserializeUser(User.deserializeUser()); */
 
 // SASS middleware
 app.use(sassMiddleware({
@@ -67,11 +66,11 @@ app.use(sassMiddleware({
 app.set('views', path.join(__dirname, '/client/views'));
 
 const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true })); 
+app.use(bodyParser.json());
 const { reset } = require('nodemon');
 const { resourceUsage } = require('process');
 const comment = require('./models/comment');
-app.use(bodyParser.urlencoded({ extended: true })); 
-app.use(bodyParser.json());
 app.use(cors());
 
 app.listen(PORT, (err) => { 
@@ -247,16 +246,29 @@ app.get('/signup', (req, res) => {
     res.render('user/signup.ejs', {error});
 });
 
-app.post('/signup', (req,res) => {
-    let user = new User(req.body);
-    user.save((err) => {
-        if (err) {
-            let error = "Something bad happened! Please try again.";
-            if (err.code === 11000) {
-                error = "That email is already taken, please try another.";
+app.post('/signup', (req, res) => {
+    let body = req.body,
+        username = body.username,
+        email = body.email,
+        password = body.password;
+    User.findOne({username: username}, (err, user) => {
+        if(err) {
+            res.status(500).send('There has been an error');
+        } else {
+            if(user) {
+                res.status(500).send('Username already exists');
+            } else {
+                let user = new User ();
+                user.username = username;
+                user.email = email;
+                user.password = user.hashPassword(password);
+                user.save();
+                res.send('User has been saved sucessfully');
             }
-            return res.render("user/signup.ejs", { error: error });
-        }
-        res.redirect("/");
-      });
+        } 
+    });
 });
+
+
+
+
