@@ -262,8 +262,13 @@ app.post('/signup', (req, res) => {
                 user.username = username;
                 user.email = email;
                 user.password = user.hashPassword(password);
-                user.save();
-                res.send('User has been saved sucessfully');
+                user.save((err, user) => {
+                    if(err) {
+                        res.status(500).send('Signup not successful');
+                    } else {
+                        res.send('Signup has been successful')
+                    }
+                });
             }
         } 
     });
