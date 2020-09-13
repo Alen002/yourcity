@@ -90,6 +90,7 @@ const { reset } = require('nodemon');
 const { resourceUsage } = require('process');
 const comment = require('./models/comment');
 const { authenticate } = require('passport');
+const { response } = require('express');
 app.use(cors());
 
 app.listen(PORT, (err) => { 
@@ -288,7 +289,8 @@ app.post('/signup', (req, res) => {
                             /* passport.authenticate('local')((req, res) => {
                             res.redirect('/cities');
                         });  */
-                       res.redirect('/cities'); 
+                        
+                       res.redirect('/cities');
                     }
                 });
             }
@@ -308,4 +310,11 @@ app.post('/login', passport.authenticate('local', {
    
 app.get('/profile', (req, res) => {
     res.send('You are now loged in');
-})
+});
+
+app.get('/logout', (req, res) => {
+    req.session.destroy( function ( err ) {
+        res.send( { message: 'Successfully logged out' } );
+    });
+});
+
