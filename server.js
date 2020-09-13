@@ -285,10 +285,10 @@ app.post('/signup', (req, res) => {
                     if(err) {
                         res.status(500).send('Signup not successful');
                     } else {
-                            passport.authenticate('local')((req, res) => {
+                            /* passport.authenticate('local')((req, res) => {
                             res.redirect('/cities');
-                        }); 
-                       /*  res.send('Signup has been successful');  */
+                        });  */
+                       res.redirect('/cities'); 
                     }
                 });
             }
