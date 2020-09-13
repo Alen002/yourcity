@@ -7,7 +7,9 @@ const cors = require('cors');
 const app = express();
 const sassMiddleware = require('node-sass-middleware');
 const expressSanitizer = require('express-sanitizer');
+const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
+const passportLocalMongoose = require('passport-local-mongoose'); 
 
 // Import mongodb models
 const City = require('./models/city');
@@ -16,15 +18,6 @@ const User = require('./models/user');
 
 // seeds.js file will run when the server starts
 const seed = require('./models/seeds'); 
-
-// User authentification modules
-const expressSession = require('express-session');
-const connectMongo = require('connect-mongo');
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-const passportLocalMongoose = require('passport-local-mongoose');
-
-
 // If seeds is run then the id of the commments need to be added manually to the city array
 /* seed(); */
 
@@ -34,27 +27,54 @@ const url = 'mongodb://localhost/CityDB'
 mongoose.connect(url, { useUnifiedTopology: true, useNewUrlParser: true });
 const con = mongoose.connection;
 con.on('open', () => console.log('Connected to mongodb'));
-
+app.use(bodyParser.urlencoded({ extended: true })); 
+app.use(bodyParser.json());
 app.use(express.json());
 app.use(morgan('short')); 
 app.use(express.static('client'));
 app.use(methodOverride('_method')); // for passing argument, eg. PUT, DELETE
 app.use(expressSanitizer()); // for avoiding script injections
 
-app.use(require('express-session')
-    ({
+
+// USER SESSION AND AUTHENTIFICATION CONFIGURATION
+
+// User Authentification
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+
+passport.use(new LocalStrategy(
+    (username, password, done) => {
+        User.findOne({username: username}, (err, user) => {
+            if(err) {
+                return done(err);
+            }
+            if(!user) {
+                return done(null, false, {message: 'Incorrect username'});
+            }
+            /* if(!user.validPassword(password)) {
+                return done(null, false, {message: 'Incorrect password'});
+            } */ 
+            return done(null, user);
+        })
+    }
+)); 
+
+// User Session
+const session = require('express-session');
+app.use(session ({
         secret: 'Do not tell anybody',
-        saveUninitialized: false,
-        resave: false
+        resave: false,
+        saveUninitialized: false
     })
 );
 
- // Initialize and session method needed for running passport
-/* app.use(passport.initialize());
+app.use(express.urlencoded({extended: true}));
+app.use(passport.initialize());
 app.use(passport.session());
-passport.use(new LocalStrategy(User.authenticate()));
+
 passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser()); */
+passport.deserializeUser(User.deserializeUser());
+
 
 // SASS middleware
 app.use(sassMiddleware({
@@ -65,12 +85,11 @@ app.use(sassMiddleware({
 // Views path for finding the EJS templates
 app.set('views', path.join(__dirname, '/client/views'));
 
-const bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({ extended: true })); 
-app.use(bodyParser.json());
+
 const { reset } = require('nodemon');
 const { resourceUsage } = require('process');
 const comment = require('./models/comment');
+const { authenticate } = require('passport');
 app.use(cors());
 
 app.listen(PORT, (err) => { 
@@ -266,7 +285,10 @@ app.post('/signup', (req, res) => {
                     if(err) {
                         res.status(500).send('Signup not successful');
                     } else {
-                        res.send('Signup has been successful')
+                            passport.authenticate('local')((req, res) => {
+                            res.redirect('/cities');
+                        }); 
+                       /*  res.send('Signup has been successful');  */
                     }
                 });
             }
@@ -274,6 +296,16 @@ app.post('/signup', (req, res) => {
     });
 });
 
+// Login Routes
+app.get('/login', (req, res) => {
+    res.render('user/login.ejs');
+});
 
-
-
+app.post('/login', passport.authenticate('local', {
+    successRedirect: '/cities',
+    failureRedirect: '/login'
+}));
+   
+app.get('/profile', (req, res) => {
+    res.send('You are now loged in');
+})
