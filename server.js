@@ -36,6 +36,7 @@ app.use(express.static('client'));
 app.use(methodOverride('_method')); // for passing argument, eg. PUT, DELETE
 app.use(expressSanitizer()); // for avoiding script injections
 
+// Automatically pass currentUser to every view
 app.use((req, res, next) => {
     res.locals.currentUser = req.user;
     next();
@@ -146,13 +147,13 @@ app.post('/cities', isLoggedIn, async (req, res) => {
 
 // NEW - Display form to create a new city
 app.get('/cities/new', isLoggedIn, (req, res) => {
-    res.render('cities/new.ejs');
+    res.render('cities/new.ejs', {currentUser: req.user});
 });
 
 // Display form to search for cities
 app.get('/cities/search', (req, res) => {
     let citySearch = [];
-    res.render('cities/search.ejs', {citySearch});
+    res.render('cities/search.ejs', {citySearch, currentUser: req.user});
 });
 
 // Retrieve and display city based by user input
@@ -174,7 +175,7 @@ app.get('/cities/:id', async (req, res) => {
             .populate('comments')
             .exec((err, cities) => {
                 console.log(cities);
-                res.render('cities/show.ejs', {cities})
+                res.render('cities/show.ejs', {cities, currentUser: req.user})
             }); 
     }
     catch(err) {
@@ -183,7 +184,7 @@ app.get('/cities/:id', async (req, res) => {
 });
   
 // DELETE - Delete city 
-app.delete('/cities/:id', async (req, res) => {
+app.delete('/cities/:id', isLoggedIn, async (req, res) => {
     try {
         const cities = await City.findByIdAndDelete(req.params.id)
         res.render('main.ejs');
@@ -194,11 +195,11 @@ app.delete('/cities/:id', async (req, res) => {
 });
 
 // EDIT - Display edit form for a city
-app.get('/cities/:id/edit', async (req, res) => {
+app.get('/cities/:id/edit', isLoggedIn, async (req, res) => {
     try {
         const cities = await City.findById(req.params.id);
         console.log(cities);
-        res.render('cities/update.ejs', {cities});
+        res.render('cities/update.ejs', {cities, currentUser: req.user});
     } 
     catch(err) {
         res.send('Something went wrong');
@@ -240,7 +241,7 @@ app.get('/comments', async (req, res) => {
 app.get('/cities/:id/comments/new', isLoggedIn, async (req, res) => { 
     try {
         const cities = await City.findById(req.params.id);
-        res.render('comments/new.ejs', {cities});
+        res.render('comments/new.ejs', {cities, currentUser: req.user});
     } 
     catch(err) {
         console.log('Something went wrong');
