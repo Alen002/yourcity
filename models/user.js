@@ -20,8 +20,6 @@ const userSchema = new mongoose.Schema({
 });
 
 // Password Hashing
-
-
 userSchema.methods.hashPassword = (password) => {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 };

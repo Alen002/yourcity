@@ -62,11 +62,6 @@ passport.use(new LocalStrategy(
     }
  ));
  
-
-
-
-
-
 // User Session
 const session = require('express-session');
 app.use(session ({
@@ -238,7 +233,7 @@ app.get('/comments', async (req, res) => {
 });
 
 // NEW - Display form for entering a new comment
-app.get('/cities/:id/comments/new', async (req, res) => {
+app.get('/cities/:id/comments/new', isLoggedIn, async (req, res) => { 
     try {
         const cities = await City.findById(req.params.id);
         res.render('comments/new.ejs', {cities});
@@ -322,8 +317,14 @@ app.get('/profile', (req, res) => {
 
 // Logout Route
 app.get('/logout', (req, res) => {
-    req.session.destroy( function ( err ) {
-        res.send( { message: 'Successfully logged out' } );
+    req.session.destroy( ( err ) => {
+        res.redirect('/cities');
     });
 });
 
+function isLoggedIn(req, res, next) {
+    if(req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/login');
+};
