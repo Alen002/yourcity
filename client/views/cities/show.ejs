@@ -18,18 +18,20 @@ This is the Show Details Page
 <a href="/cities">Back to cities</a>
 
 <!-- DELETE data entry -->
-<form action="/cities/<%= cities._id %>?_method=DELETE" method="POST">
-    <button class="btn btn-danger mb-2">DELETE CITY</button>
-</form>
+<% if(currentUser) { %>
+    <form action="/cities/<%= cities._id %>?_method=DELETE" method="POST">
+        <button class="btn btn-danger mb-2">DELETE CITY</button>
+    </form>
 
-<!-- UPDATE data entry -->
-<form action="/cities/<%= cities._id %>/edit" method="GET">
-    <button class="btn btn-secondary mb-2">UPDATE CITY</button>
-</form>
+    <!-- UPDATE data entry -->
+    <form action="/cities/<%= cities._id %>/edit" method="GET">
+        <button class="btn btn-secondary mb-2">UPDATE CITY</button>
+    </form>
 
-<!-- ADD new comment-->
-<form action="/cities/<%= cities._id %>/comments/new" method="GET">
-    <button class="btn btn-secondary mb-2">New Comment</button>
-</form>
+    <!-- ADD new comment-->
+    <form action="/cities/<%= cities._id %>/comments/new" method="GET">
+        <button class="btn btn-secondary mb-2">New Comment</button>
+    </form>
+<% } %>
 
 <%- include("../partials/footer") %>
