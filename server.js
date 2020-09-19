@@ -123,7 +123,7 @@ app.get('/cities', async (req, res) => {
 });
 
 // CREATE - add new city to db
-app.post('/cities', async (req, res) => {
+app.post('/cities', isLoggedIn, async (req, res) => {
     const city = new City ({
         city: req.body.city= req.sanitize(req.body.city),
         country: req.body.country = req.sanitize(req.body.country),
@@ -244,7 +244,7 @@ app.get('/cities/:id/comments/new', isLoggedIn, async (req, res) => {
 });
 
 // CREATE - Create a new comment and push it to the related city
-app.post('/cities/:id/comments', async (req, res) => {
+app.post('/cities/:id/comments', isLoggedIn, async (req, res) => {
     const comment = new Comment ({
         user: req.body.user = req.sanitize(req.body.user),
         comment: req.body.comment = req.sanitize(req.body.comment)
