@@ -36,6 +36,10 @@ app.use(express.static('client'));
 app.use(methodOverride('_method')); // for passing argument, eg. PUT, DELETE
 app.use(expressSanitizer()); // for avoiding script injections
 
+app.use((req, res, next) => {
+    res.locals.currentUser = req.user;
+    next();
+});
 
 // USER SESSION AND AUTHENTIFICATION CONFIGURATION
 
@@ -115,7 +119,7 @@ app.get('/cities', async (req, res) => {
     try {
         const cities = await City.find();
         /* console.log(cities); */
-        res.render('cities/index.ejs', {cities})
+        res.render('cities/index.ejs', {cities, currentUser: req.user})
     }
     catch(err) {
     res.send('Cound not retrieve data');        
