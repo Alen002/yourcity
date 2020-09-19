@@ -141,7 +141,7 @@ app.post('/cities', async (req, res) => {
 });
 
 // NEW - Display form to create a new city
-app.get('/cities/new', (req, res) => {
+app.get('/cities/new', isLoggedIn, (req, res) => {
     res.render('cities/new.ejs');
 });
 
