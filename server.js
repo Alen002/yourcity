@@ -11,6 +11,7 @@ const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
 const passportLocalMongoose = require('passport-local-mongoose'); 
 
+
 // Import mongodb models
 const City = require('./models/city');
 const Comment = require('./models/comment');
@@ -51,13 +52,20 @@ passport.use(new LocalStrategy(
             if(!user) {
                 return done(null, false, {message: 'Incorrect username'});
             }
-            /* if(!user.validPassword(password)) {
-                return done(null, false, {message: 'Incorrect password'});
-            } */ 
-            return done(null, user);
-        })
+            
+            if(!user.comparePassword(password, user.password)) {
+                return done(null, false, {message: 'Incorrect username'});
+            }
+            return done(null, user);  
+          
+        });
     }
-)); 
+ ));
+ 
+
+
+
+
 
 // User Session
 const session = require('express-session');
@@ -111,7 +119,7 @@ app.get('/', (req, res) => {
 app.get('/cities', async (req, res) => {
     try {
         const cities = await City.find();
-        console.log(cities);
+        /* console.log(cities); */
         res.render('cities/index.ejs', {cities})
     }
     catch(err) {
@@ -260,7 +268,7 @@ app.post('/cities/:id/comments', async (req, res) => {
 
 /********* Authentification routes *********/
 
-// Signup Routes
+// Signup Routes = Create a new user
 app.get('/signup', (req, res) => {
     let error = '';
     res.render('user/signup.ejs', {error});
@@ -312,6 +320,7 @@ app.get('/profile', (req, res) => {
     res.send('You are now loged in');
 });
 
+// Logout Route
 app.get('/logout', (req, res) => {
     req.session.destroy( function ( err ) {
         res.send( { message: 'Successfully logged out' } );
