@@ -258,10 +258,21 @@ app.get('/signup', (req, res) => {
 });
 
 app.post('/signup', async (req, res) => {
-    const {email, username, password} = req.body; // destructuring the body request obtained from the client/browser
-    const user = new User({email, username});
-    const registerUser = await User.register(user, password);
-    res.redirect('/cities'); 
+    const {email, username, password} = req.body; // destructuring the body request obtained from client/browser
+    try {
+        const user = new User({email, username});
+        const registerUser = await User.register(user, password);
+        res.redirect('/cities'); 
+    }
+    catch(err) {
+        User.findOne({username: username}, (err, user) => {
+            if(user) {
+                res.send('User already exists');
+            } else {
+                res.send('Something went wrong');
+            }
+        });
+    }
 });
 
 // Login Routes
