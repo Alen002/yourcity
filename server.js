@@ -8,8 +8,11 @@ const app = express();
 const sassMiddleware = require('node-sass-middleware');
 const expressSanitizer = require('express-sanitizer');
 const bodyParser = require('body-parser');
-const bcrypt = require('bcryptjs');
-const passportLocalMongoose = require('passport-local-mongoose'); 
+
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+/* const bcrypt = require('bcryptjs');
+const passportLocalMongoose = require('passport-local-mongoose');  */
 
 
 // Import mongodb models
@@ -44,29 +47,8 @@ app.use((req, res, next) => {
 
 // USER SESSION AND AUTHENTIFICATION CONFIGURATION
 
-// User Authentification
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
+/* const LocalStrategy = require('passport-local').Strategy; */
 
-passport.use(new LocalStrategy(
-    (username, password, done) => {
-        User.findOne({username: username}, (err, user) => {
-            if(err) {
-                return done(err);
-            }
-            if(!user) {
-                return done(null, false, {message: 'Incorrect username'});
-            }
-            
-            if(!user.comparePassword(password, user.password)) {
-                return done(null, false, {message: 'Incorrect username'});
-            }
-            return done(null, user);  
-          
-        });
-    }
- ));
- 
 // User Session
 const session = require('express-session');
 app.use(session ({
@@ -77,12 +59,14 @@ app.use(session ({
 );
 
 app.use(express.urlencoded({extended: true}));
+
+// PASSPORT
 app.use(passport.initialize());
 app.use(passport.session());
 
+passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-
 
 // SASS middleware
 app.use(sassMiddleware({
@@ -109,6 +93,13 @@ app.listen(PORT, (err) => {
 
 /**** START of ROUTES ****/
 
+// JUST TEMPORARY - Please delete later
+app.get('/fakeUser', async (req, res) => {
+    const user = new User({email: 'test2@gmail.com', username: 'test2'});
+    const newUser = await User.register(user, 'test');
+    res.send(newUser);
+}); 
+// END of Temporary 
 
 // Route for the main page
 app.get('/', (req, res) => {
@@ -274,36 +265,11 @@ app.get('/signup', (req, res) => {
     res.render('user/signup.ejs', {error});
 });
 
-app.post('/signup', (req, res) => {
-    let body = req.body,
-        username = body.username,
-        email = body.email,
-        password = body.password;
-    User.findOne({username: username}, (err, user) => {
-        if(err) {
-            res.status(500).send('There has been an error');
-        } else {
-            if(user) {
-                res.status(500).send('Username already exists');
-            } else {
-                let user = new User ();
-                user.username = username;
-                user.email = email;
-                user.password = user.hashPassword(password);
-                user.save((err, user) => {
-                    if(err) {
-                        res.status(500).send('Signup not successful');
-                    } else {
-                            /* passport.authenticate('local')((req, res) => {
-                            res.redirect('/cities');
-                        });  */
-                        
-                       res.redirect('/cities');
-                    }
-                });
-            }
-        } 
-    });
+app.post('/signup', async (req, res) => {
+    const {email, username, password} = req.body; // destructuring the body request obtained from the client/browser
+    const user = new User({email, username});
+    const registerUser = await User.register(user, password);
+    res.send(registerUser);
 });
 
 // Login Routes
