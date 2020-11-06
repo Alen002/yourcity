@@ -93,14 +93,6 @@ app.listen(PORT, (err) => {
 
 /**** START of ROUTES ****/
 
-// JUST TEMPORARY - Please delete later
-app.get('/fakeUser', async (req, res) => {
-    const user = new User({email: 'test2@gmail.com', username: 'test2'});
-    const newUser = await User.register(user, 'test');
-    res.send(newUser);
-}); 
-// END of Temporary 
-
 // Route for the main page
 app.get('/', (req, res) => {
     res.render('main.ejs');
@@ -269,7 +261,7 @@ app.post('/signup', async (req, res) => {
     const {email, username, password} = req.body; // destructuring the body request obtained from the client/browser
     const user = new User({email, username});
     const registerUser = await User.register(user, password);
-    res.send(registerUser);
+    res.redirect('/cities'); 
 });
 
 // Login Routes
