@@ -1,16 +1,18 @@
 <%- include("../partials/header") %>
     
     <div class="container">
-        <h3>Please Login</h3>    
+        <h3>Please Login</h3>
         <form action="/login" method="POST">
             <input type="text" name="username" placeholder="Your name" class="form-control mb-2"></br>
             <!-- <input type="text" name="email" placeholder="Your email" class="form-control mb-2"></br> -->
             <input type="password" name="password" placeholder="Enter a password" class="form-control mb-2"></br>
+                
             <button type="submit" class="btn btn-primary mb-2">Login</button>
             <a href="/" class="btn btn-secondary mb-2">Cancel</a>
+            <p class="flash"><%= errors %></p>
             
         </form>
     </div>
     <a href="/">Back</a>
-
+    
     <%- include("../partials/footer") %>

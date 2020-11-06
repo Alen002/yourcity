@@ -1,3 +1,10 @@
 .cities-background {
   margin: 20px 20px;
-  background-color: lightgrey; }
+  background-color: lightgrey;
+}
+
+.flash {
+  color: white;
+  background-color: red;
+}
+/*# sourceMappingURL=style.css.map */

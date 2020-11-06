@@ -9,8 +9,10 @@ const sassMiddleware = require('node-sass-middleware');
 const expressSanitizer = require('express-sanitizer');
 const bodyParser = require('body-parser');
 
+
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
+const flash = require('express-flash-messages');
 /* const bcrypt = require('bcryptjs');
 const passportLocalMongoose = require('passport-local-mongoose');  */
 
@@ -39,6 +41,7 @@ app.use(express.static('client'));
 app.use(methodOverride('_method')); // for passing argument, eg. PUT, DELETE
 app.use(expressSanitizer()); // for avoiding script injections
 
+
 // Automatically pass currentUser to every view
 app.use((req, res, next) => {
     res.locals.currentUser = req.user;
@@ -63,6 +66,7 @@ app.use(express.urlencoded({extended: true}));
 // PASSPORT
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash()); 
 
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
@@ -89,7 +93,6 @@ app.listen(PORT, (err) => {
     if (err) console.log("Error in server setup"); 
     console.log("Server listening on Port", PORT);
 });
-
 
 /**** START of ROUTES ****/
 
@@ -253,23 +256,25 @@ app.post('/cities/:id/comments', isLoggedIn, async (req, res) => {
 
 // Signup Routes = Create a new user
 app.get('/signup', (req, res) => {
-    let error = '';
-    res.render('user/signup.ejs', {error});
+    let errors = '';
+    res.render('user/signup.ejs', {errors});
 });
 
 app.post('/signup', async (req, res) => {
-    const {email, username, password} = req.body; // destructuring the body request obtained from client/browser
+    const {email, username, password} = req.body; // destructure the body request obtained from client/browser
+    
     try {
         const user = new User({email, username});
         const registerUser = await User.register(user, password);
+        req.flash('success', ' Welcome!!!');
         res.redirect('/cities'); 
     }
-    catch(err) {
+    catch(err) { // error catching in case same user name is entered or other error appears
         User.findOne({username: username}, (err, user) => {
             if(user) {
-                res.send('User already exists');
+                res.render('user/signup.ejs', {errors: 'User already exists'});
             } else {
-                res.send('Something went wrong');
+                res.redirect('/cities');
             }
         });
     }
@@ -277,12 +282,22 @@ app.post('/signup', async (req, res) => {
 
 // Login Routes
 app.get('/login', (req, res) => {
-    res.render('user/login.ejs');
+    
+    const flashMessages = res.locals.getMessages();  
+    console.log('flash', flashMessages);
+
+    if(flashMessages.error) {
+        res.render('user/login.ejs', {errors: flashMessages.error});
+    } else {
+        let errors = ''; 
+        res.render('user/login.ejs', {errors});
+    }    
 });
 
 app.post('/login', passport.authenticate('local', {
     successRedirect: '/cities',
-    failureRedirect: '/login'
+    failureRedirect: '/login',
+    failureFlash: true
 }));
    
 app.get('/profile', (req, res) => {
@@ -302,3 +317,6 @@ function isLoggedIn(req, res, next) {
     }
     res.redirect('/login');
 };
+
+
+
