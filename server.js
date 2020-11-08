@@ -266,7 +266,7 @@ app.post('/signup', async (req, res, next) => {
     try {
         const user = new User({email, username});
         const registerUser = await User.register(user, password);
-        req.login(registerUser, err => {
+        req.login(registerUser, err => { // req.login() automatic login
             if(err) {
                 return next(err);
             } else {
@@ -320,9 +320,9 @@ app.get('/logout', (req, res) => {
 
 function isLoggedIn(req, res, next) {
     if(req.isAuthenticated()) {
-        console.log(req.user.displayName);
         return next();
     }
+    console.log(req.path, req.originalUrl);
     res.redirect('/login');
 };
 
