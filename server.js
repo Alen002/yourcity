@@ -24,7 +24,7 @@ const User = require('./models/user');
 
 // seeds.js file will run when the server starts
 const seed = require('./models/seeds'); 
-// If seeds is run then the id of the commments need to be added manually to the city array
+// If seed() runs then the commment id needs to be added manually to the city array
 /* seed(); */
 
 // MongoDb and mongoose
@@ -104,7 +104,7 @@ app.get('/', (req, res) => {
 // INDEX - Display all city collections from the db
 app.get('/cities', async (req, res) => {
     try {
-        const cities = await City.find();
+        const cities = await City.find().populate('author');
         /* console.log(cities); */
         res.render('cities/index.ejs', {cities, currentUser: req.user})
     }
