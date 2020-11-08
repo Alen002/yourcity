@@ -104,7 +104,7 @@ app.get('/', (req, res) => {
 // INDEX - Display all city collections from the db
 app.get('/cities', async (req, res) => {
     try {
-        const cities = await City.find().populate('author');
+        const cities = await City.find().populate('author');  // user reference in city schema is populated with user data
         /* console.log(cities); */
         res.render('cities/index.ejs', {cities, currentUser: req.user})
     }
@@ -119,6 +119,7 @@ app.post('/cities', isLoggedIn, async (req, res) => {
         city: req.body.city= req.sanitize(req.body.city),
         country: req.body.country = req.sanitize(req.body.country),
         image: req.body.image = req.sanitize(req.body.image),
+        author: req.user._id,
         description: req.body.description = req.sanitize(req.body.description)
     });
 
