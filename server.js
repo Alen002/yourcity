@@ -260,14 +260,21 @@ app.get('/signup', (req, res) => {
     res.render('user/signup.ejs', {errors});
 });
 
-app.post('/signup', async (req, res) => {
+app.post('/signup', async (req, res, next) => {
     const {email, username, password} = req.body; // destructure the body request obtained from client/browser
     
     try {
         const user = new User({email, username});
         const registerUser = await User.register(user, password);
-        req.flash('success', ' Welcome!!!');
-        res.redirect('/cities'); 
+        req.login(registerUser, err => {
+            if(err) {
+                return next(err);
+            } else {
+                req.flash('success', ' Welcome!!!');
+                res.redirect('/cities'); 
+            }
+        });
+        
     }
     catch(err) { // error catching in case same user name is entered or other error appears
         User.findOne({username: username}, (err, user) => {
@@ -295,11 +302,11 @@ app.get('/login', (req, res) => {
 });
 
 app.post('/login', passport.authenticate('local', {
-    successRedirect: '/cities',
     failureRedirect: '/login',
+    successRedirect: '/cities',
     failureFlash: true
-}));
-   
+})); 
+  
 app.get('/profile', (req, res) => {
     res.send('You are now loged in');
 });
@@ -313,10 +320,16 @@ app.get('/logout', (req, res) => {
 
 function isLoggedIn(req, res, next) {
     if(req.isAuthenticated()) {
+        console.log(req.user.displayName);
         return next();
     }
     res.redirect('/login');
 };
 
-
-
+app.get('/userdata', (req, res) => {
+   if(req.user) {
+       res.send(req.user); 
+   } else {
+       res.send('user is not signed in');
+   }    
+});
