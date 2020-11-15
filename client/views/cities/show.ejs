@@ -9,7 +9,7 @@ This is the Show Details Page
 <p>
     <% cities.comments.forEach((user) => { %>
         <p> date: <%= user.date %></br>
-        Author: <%= user.user %></br>
+        Author: <%= user.author.username%></br>
         Comment: <%= user.comment %></br>        
         </p>
     <% }) %>

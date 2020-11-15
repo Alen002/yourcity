@@ -159,7 +159,7 @@ app.post('/cities/search', async (req, res) => {
 app.get('/cities/:id', async (req, res) => {
     try {
         const cities = await City.findById(req.params.id)
-            .populate('comments')  //.populate('user_id' 'comment.commentor_id')
+            .populate({path: 'comments', populate: {path: 'author'}});
            
            /*  .exec((err, cities) => {
                 console.log(cities);
@@ -350,10 +350,26 @@ app.get('/allcities', async (req, res) => {
     }    
 });
 
-app.get('/citycomment', async (req, res) => {
+app.get('/citycomments', async (req, res) => {
     
     try {
         let getData = await City.find({}).populate({path: 'comments', select: 'comment'});
+        res.json(getData);                 
+    }
+    catch(err) {
+        console.log('Could not fetch data');
+    }    
+});
+
+app.get('/commentsauthor', async (req, res) => {
+    
+    try {
+        let getData = await City.find({}).populate({
+            path: "comments", // populate comments
+            populate: {
+               path: "author" // in comments, populate author
+            }
+         })
         res.json(getData);                 
     }
     catch(err) {
