@@ -10,10 +10,7 @@ const commentSchema = new mongoose.Schema({
         type: Number, 
         default: new Date()
     }, 
-    user: {
-        type: String,
-        required: true
-    },
+    
     // Object referencing to User schema/model
     author: {
         type: mongoose.Schema.Types.ObjectId,
