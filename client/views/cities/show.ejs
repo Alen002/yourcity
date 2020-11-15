@@ -8,8 +8,9 @@ This is the Show Details Page
 <!-- Reference to comments model-->
 <p>
     <% cities.comments.forEach((user) => { %>
-        <p> Author: <%= user.comment %></br>
-            
+        <p> date: <%= user.date %></br>
+        Author: <%= user.user %></br>
+        Comment: <%= user.comment %></br>        
         </p>
     <% }) %>
 </p>

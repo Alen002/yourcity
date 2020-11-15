@@ -159,12 +159,13 @@ app.post('/cities/search', async (req, res) => {
 app.get('/cities/:id', async (req, res) => {
     try {
         const cities = await City.findById(req.params.id)
-            .populate('comments.author')  //.populate('user_id' 'comment.commentor_id')
+            .populate('comments')  //.populate('user_id' 'comment.commentor_id')
            
-            .exec((err, cities) => {
+           /*  .exec((err, cities) => {
                 console.log(cities);
                 res.render('cities/show.ejs', {cities, currentUser: req.user})
-            }); 
+            }); */ 
+            res.render('cities/show.ejs', {cities, currentUser: req.user});
     }
     catch(err) {
         res.send('Cound not retrieve data');        
@@ -342,7 +343,7 @@ app.get('/allcities', async (req, res) => {
     
     try {
         let getData = await City.find({}, {city: 1});       
-       res.json(getData);                 
+        res.json(getData);                 
     }
     catch(err) {
         console.log('Could not fetch data');
@@ -352,8 +353,8 @@ app.get('/allcities', async (req, res) => {
 app.get('/citycomment', async (req, res) => {
     
     try {
-        let getData = await City.find({}).populate({path: 'comments'})
-       res.json(getData);                 
+        let getData = await City.find({}).populate({path: 'comments', select: 'comment'});
+        res.json(getData);                 
     }
     catch(err) {
         console.log('Could not fetch data');
