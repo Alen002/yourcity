@@ -7,10 +7,9 @@ This is the Show Details Page
 <p><%= cities.description %></p>
 <!-- Reference to comments model-->
 <p>
-    <% cities.comments.forEach((comment) => { %>
-        <p>
-            User: <%= comment.user %></br>
-            Comment: <%= comment.comment %></br>
+    <% cities.comments.forEach((user) => { %>
+        <p> Author: <%= user.comment %></br>
+            
         </p>
     <% }) %>
 </p>

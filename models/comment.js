@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const { text } = require('body-parser');
 mongoose.set('useCreateIndex', true);
+const User = require('./user');
 
 // Schema for user comments
 const commentSchema = new mongoose.Schema({
@@ -12,6 +13,11 @@ const commentSchema = new mongoose.Schema({
     user: {
         type: String,
         required: true
+    },
+    // Object referencing to User schema/model
+    author: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     },
     comment: {
         type: String,

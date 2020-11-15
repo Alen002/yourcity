@@ -119,7 +119,7 @@ app.post('/cities', isLoggedIn, async (req, res) => {
         city: req.body.city= req.sanitize(req.body.city),
         country: req.body.country = req.sanitize(req.body.country),
         image: req.body.image = req.sanitize(req.body.image),
-        author: req.user._id,
+        author: req.user._id, // derived from currentUser
         description: req.body.description = req.sanitize(req.body.description)
     });
 
@@ -159,7 +159,8 @@ app.post('/cities/search', async (req, res) => {
 app.get('/cities/:id', async (req, res) => {
     try {
         const cities = await City.findById(req.params.id)
-            .populate('comments')
+            .populate('comments.author')  //.populate('user_id' 'comment.commentor_id')
+           
             .exec((err, cities) => {
                 console.log(cities);
                 res.render('cities/show.ejs', {cities, currentUser: req.user})
@@ -215,7 +216,7 @@ app.put('/update/:id', async (req, res) => {
 // Show all comments
 app.get('/comments', async (req, res) => {
     try {
-        const comments = await Comment.find();
+        const comments = await Comment.find().populate('author');
         res.json({comments});
         
     } 
@@ -227,7 +228,7 @@ app.get('/comments', async (req, res) => {
 // NEW - Display form for entering a new comment
 app.get('/cities/:id/comments/new', isLoggedIn, async (req, res) => { 
     try {
-        const cities = await City.findById(req.params.id);
+        const cities = await (await City.findById(req.params.id));
         res.render('comments/new.ejs', {cities, currentUser: req.user});
     } 
     catch(err) {
@@ -239,7 +240,8 @@ app.get('/cities/:id/comments/new', isLoggedIn, async (req, res) => {
 app.post('/cities/:id/comments', isLoggedIn, async (req, res) => {
     const comment = new Comment ({
         user: req.body.user = req.sanitize(req.body.user),
-        comment: req.body.comment = req.sanitize(req.body.comment)
+        comment: req.body.comment = req.sanitize(req.body.comment),
+        author: req.user._id
     });
     comment.save();
     try {
@@ -333,4 +335,27 @@ app.get('/userdata', (req, res) => {
    } else {
        res.send('user is not signed in');
    }    
+});
+
+
+app.get('/allcities', async (req, res) => {
+    
+    try {
+        let getData = await City.find({}, {city: 1});       
+       res.json(getData);                 
+    }
+    catch(err) {
+        console.log('Could not fetch data');
+    }    
+});
+
+app.get('/citycomment', async (req, res) => {
+    
+    try {
+        let getData = await City.find({}).populate({path: 'comments'})
+       res.json(getData);                 
+    }
+    catch(err) {
+        console.log('Could not fetch data');
+    }    
 });
