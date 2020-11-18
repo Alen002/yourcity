@@ -36,10 +36,12 @@ Author of the city: <%= cities.author._id %> -->
     <form action="/cities/<%= cities._id %>/edit" method="GET">
         <button class="btn btn-secondary mb-2">UPDATE CITY</button>
     </form>
-    <!-- ADD new comment-->
-    <form action="/cities/<%= cities._id %>/comments/new" method="GET">
-        <button class="btn btn-secondary mb-2">New Comment</button>
-    </form>
+    
 <% } %>
+
+<!-- ADD new comment-->
+<form action="/cities/<%= cities._id %>/comments/new" method="GET">
+    <button class="btn btn-secondary mb-2">New Comment</button>
+</form>
 
 <%- include("../partials/footer") %>
