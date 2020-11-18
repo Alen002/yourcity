@@ -159,7 +159,8 @@ app.post('/cities/search', async (req, res) => {
 app.get('/cities/:id', async (req, res) => {
     try {
         const cities = await City.findById(req.params.id)
-            .populate({path: 'comments', populate: {path: 'author'}});
+            .populate({path: 'comments', populate: {path: 'author'}})
+            .populate('author')
            
            /*  .exec((err, cities) => {
                 console.log(cities);
@@ -337,6 +338,8 @@ app.get('/userdata', (req, res) => {
    }    
 });
 
+
+// Routes to check consistency of data
 
 app.get('/allcities', async (req, res) => {
     

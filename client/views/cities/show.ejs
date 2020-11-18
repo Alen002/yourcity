@@ -15,19 +15,26 @@ This is the Show Details Page
     <% }) %>
 </p>
 
-<a href="/cities">Back to cities</a>
+<a href="/cities">Back to cities</a></br>
+
+
+<!-- <% if (currentUser) { %>
+    <p> Current user is : <%= currentUser._id %></p>
+    <%} else { %>
+    No one is logged in
+    <% } %></br>
+Author of the city: <%= cities.author._id %> -->
+    
 
 <!-- DELETE data entry -->
-<% if(currentUser) { %>
+<% if(currentUser && cities.author.equals(currentUser._id)) { %>
     <form action="/cities/<%= cities._id %>?_method=DELETE" method="POST">
         <button class="btn btn-danger mb-2">DELETE CITY</button>
     </form>
-
     <!-- UPDATE data entry -->
     <form action="/cities/<%= cities._id %>/edit" method="GET">
         <button class="btn btn-secondary mb-2">UPDATE CITY</button>
     </form>
-
     <!-- ADD new comment-->
     <form action="/cities/<%= cities._id %>/comments/new" method="GET">
         <button class="btn btn-secondary mb-2">New Comment</button>
