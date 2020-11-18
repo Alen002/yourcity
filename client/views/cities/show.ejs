@@ -27,8 +27,9 @@ Posted by <%= cities.author.username %></br>
 Author of the city: <%= cities.author._id %> -->
     
 
-<!-- DELETE data entry -->
+<!-- Authorization - Only the owner of the city can update od delete it -->
 <% if(currentUser && cities.author.equals(currentUser._id)) { %>
+    <!-- DELETE data entry -->
     <form action="/cities/<%= cities._id %>?_method=DELETE" method="POST">
         <button class="btn btn-danger mb-2">DELETE CITY</button>
     </form>
@@ -39,9 +40,11 @@ Author of the city: <%= cities.author._id %> -->
     
 <% } %>
 
-<!-- ADD new comment-->
-<form action="/cities/<%= cities._id %>/comments/new" method="GET">
-    <button class="btn btn-secondary mb-2">New Comment</button>
-</form>
+<!-- ADD new comment - Everyone can add comments who is logged in -->
+<% if(currentUser) { %>
+    <form action="/cities/<%= cities._id %>/comments/new" method="GET">
+        <button class="btn btn-secondary mb-2">New Comment</button>
+    </form>
+<% } %>
 
 <%- include("../partials/footer") %>
