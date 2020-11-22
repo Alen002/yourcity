@@ -9,18 +9,22 @@ const sassMiddleware = require('node-sass-middleware');
 const expressSanitizer = require('express-sanitizer');
 const bodyParser = require('body-parser');
 
-
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const flash = require('express-flash-messages');
 /* const bcrypt = require('bcryptjs');
 const passportLocalMongoose = require('passport-local-mongoose');  */
 
-
 // Import mongodb models
 const City = require('./models/city');
 const Comment = require('./models/comment');
 const User = require('./models/user');
+
+// middleware routes
+
+const checkdata = require('./routes/checkdata');
+
+
 
 // seeds.js file will run when the server starts
 const seed = require('./models/seeds'); 
@@ -95,6 +99,8 @@ app.listen(PORT, (err) => {
 });
 
 /**** START of ROUTES ****/
+app.use(checkdata);
+
 
 // Route for the main page
 app.get('/', (req, res) => {
@@ -187,17 +193,17 @@ app.delete('/cities/:id', isLoggedIn, async (req, res) => {
 // EDIT - Display edit form for a city
 app.get('/cities/:id/edit', isLoggedIn, async (req, res) => {
     try {
-        const cities = await City.findById(req.params.id);
-        console.log(cities);
+        const cities = await City.findById(req.params.id);  
+        console.log(req.user._id)
         res.render('cities/update.ejs', {cities, currentUser: req.user});
-    } 
+    }
     catch(err) {
         res.send('Something went wrong');
     }
 });
 
 // UPDATE - After changes update/save changes for a city
-app.put('/update/:id', async (req, res) => {
+app.put('/update/:id', isLoggedIn, async (req, res) => {
     try {
         const update = await City.findByIdAndUpdate(req.params.id, {
             city: req.body.city= req.sanitize(req.body.city),
@@ -338,43 +344,3 @@ app.get('/userdata', (req, res) => {
    }    
 });
 
-
-// Routes to check consistency of data
-
-app.get('/allcities', async (req, res) => {
-    
-    try {
-        let getData = await City.find({}, {city: 1});       
-        res.json(getData);                 
-    }
-    catch(err) {
-        console.log('Could not fetch data');
-    }    
-});
-
-app.get('/citycomments', async (req, res) => {
-    
-    try {
-        let getData = await City.find({}).populate({path: 'comments', select: 'comment'});
-        res.json(getData);                 
-    }
-    catch(err) {
-        console.log('Could not fetch data');
-    }    
-});
-
-app.get('/commentsauthor', async (req, res) => {
-    
-    try {
-        let getData = await City.find({}).populate({
-            path: "comments", // populate comments
-            populate: {
-               path: "author" // in comments, populate author
-            }
-         })
-        res.json(getData);                 
-    }
-    catch(err) {
-        console.log('Could not fetch data');
-    }    
-});
