@@ -20,10 +20,11 @@ const City = require('./models/city');
 const Comment = require('./models/comment');
 const User = require('./models/user');
 
-// middleware routes
+// middleware routes and functions
 const checkdata = require('./routes/checkdata');
 const city = require('./routes/cityroutes');
 const {isLoggedIn} = require('./middleware');
+const commentroutes = require('./routes/commentroutes');
 
 // seeds.js file will run when the server starts
 const seed = require('./models/seeds'); 
@@ -101,6 +102,7 @@ app.listen(PORT, (err) => {
 /**** START of ROUTES ****/
 app.use(checkdata);
 app.use(city);
+app.use(commentroutes);
 
 // Route for the main page
 app.get('/', (req, res) => {
@@ -108,47 +110,6 @@ app.get('/', (req, res) => {
 });
 
 
-
-// Show all comments
-app.get('/comments', async (req, res) => {
-    try {
-        const comments = await Comment.find().populate('author');
-        res.json({comments});
-        
-    } 
-    catch(err) {
-        console.log('Cannot display comments');
-    }
-});
-
-// NEW - Display form for entering a new comment
-app.get('/cities/:id/comments/new', isLoggedIn, async (req, res) => { 
-    try {
-        const cities = await (await City.findById(req.params.id));
-        res.render('comments/new.ejs', {cities, currentUser: req.user});
-    } 
-    catch(err) {
-        console.log('Something went wrong');
-    }
-});
-
-// CREATE - Create a new comment and push it to the related city
-app.post('/cities/:id/comments', isLoggedIn, async (req, res) => {
-    const comment = new Comment ({
-        comment: req.body.comment = req.sanitize(req.body.comment),
-        author: req.user._id
-    });
-    comment.save();
-    try {
-        const cities = await City.findById(req.params.id);
-        cities.comments.push(comment); 
-        cities.save();
-         
-        res.redirect('/cities');
-    } catch(err) {
-        res.send('Something went wrong while trying to save the comment to the db');
-    }
-}); 
 
 /********* Authentification routes *********/
 
@@ -216,18 +177,6 @@ app.get('/signup', (req, res) => {
     });
   });
   
-  /* function isLoggedIn(req, res, next) {
-    if(req.isAuthenticated()) {
-        return next();
-    }
-    console.log(req.path, req.originalUrl);
-    res.redirect('/login');
-  };
- */
-
-
-
-
 app.get('/userdata', (req, res) => {
    if(req.user) {
        res.send(req.user); 
