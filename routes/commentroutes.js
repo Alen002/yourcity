@@ -6,7 +6,7 @@ const City = require('../models/city');
 const Comment = require('../models/comment');
 const User = require('../models/user');
 
-const {isLoggedIn} = require('../middleware');
+const { isLoggedIn } = require('../middleware');
 
 // Show all comments
 router.get('/comments', async (req, res) => {

@@ -99,17 +99,14 @@ app.listen(PORT, (err) => {
     console.log("Server listening on Port", PORT);
 });
 
-/**** START of ROUTES ****/
-app.use(checkdata);
-app.use(city);
-app.use(commentroutes);
-
-// Route for the main page
+/********* MAIN ROUTES **********/
 app.get('/', (req, res) => {
     res.render('main.ejs');
 });
-
-
+  
+app.use(checkdata);
+app.use(city);
+app.use(commentroutes);
 
 /********* Authentification routes *********/
 
