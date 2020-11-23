@@ -27,9 +27,7 @@ router.get('/citycomments', async (req, res) => {
   }    
 });
 
-router.
-route('/commentsauthor').
-get(async (req, res) => { 
+router.get('/commentsauthor', async (req, res) => { 
   try {
       let getData = await City.find({}).populate({
           path: "comments", // populate comments

@@ -21,10 +21,9 @@ const Comment = require('./models/comment');
 const User = require('./models/user');
 
 // middleware routes
-
 const checkdata = require('./routes/checkdata');
-
-
+const city = require('./routes/cityroutes');
+const {isLoggedIn} = require('./middleware');
 
 // seeds.js file will run when the server starts
 const seed = require('./models/seeds'); 
@@ -42,6 +41,7 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(morgan('short')); 
 app.use(express.static('client'));
+app.use(express.static('public'));
 app.use(methodOverride('_method')); // for passing argument, eg. PUT, DELETE
 app.use(expressSanitizer()); // for avoiding script injections
 
@@ -100,126 +100,14 @@ app.listen(PORT, (err) => {
 
 /**** START of ROUTES ****/
 app.use(checkdata);
-
+app.use(city);
 
 // Route for the main page
 app.get('/', (req, res) => {
     res.render('main.ejs');
 });
 
-// INDEX - Display all city collections from the db
-app.get('/cities', async (req, res) => {
-    try {
-        const cities = await City.find().populate('author');  // user reference in city schema is populated with user data
-        /* console.log(cities); */
-        res.render('cities/index.ejs', {cities, currentUser: req.user})
-    }
-    catch(err) {
-    res.send('Cound not retrieve data');        
-    }  
-});
 
-// CREATE - add new city to db
-app.post('/cities', isLoggedIn, async (req, res) => {
-    const city = new City ({
-        city: req.body.city= req.sanitize(req.body.city),
-        country: req.body.country = req.sanitize(req.body.country),
-        image: req.body.image = req.sanitize(req.body.image),
-        author: req.user._id, // derived from currentUser
-        description: req.body.description = req.sanitize(req.body.description)
-    });
-
-    try {
-        const addData = await city.save();
-        res.json(addData);
-    }
-    catch(err) {
-        res.send('Error: Could not save city');
-    }
-});
-
-// NEW - Display form to create a new city
-app.get('/cities/new', isLoggedIn, (req, res) => {
-    res.render('cities/new.ejs', {currentUser: req.user});
-});
-
-// Display form to search for cities
-app.get('/cities/search', (req, res) => {
-    let citySearch = [];
-    res.render('cities/search.ejs', {citySearch, currentUser: req.user});
-});
-
-// Retrieve and display city based by user input
-app.post('/cities/search', async (req, res) => {
-    let city = req.body.searchCity;
-    try {
-        const citySearch = await City.find({$text: {$search: city}});
-        res.render('cities/search.ejs', {citySearch});
-    }
-    catch(err) {
-        res.send('There has been an error');
-    }
-});
-
-// SHOW - Display details of a city and related user comments
-app.get('/cities/:id', async (req, res) => {
-    try {
-        const cities = await City.findById(req.params.id)
-            .populate({path: 'comments', populate: {path: 'author'}})
-            .populate('author')
-           
-           /*  .exec((err, cities) => {
-                console.log(cities);
-                res.render('cities/show.ejs', {cities, currentUser: req.user})
-            }); */ 
-            res.render('cities/show.ejs', {cities, currentUser: req.user});
-    }
-    catch(err) {
-        res.send('Cound not retrieve data');        
-    }   
-});
-  
-// DELETE - Delete city 
-app.delete('/cities/:id', isLoggedIn, async (req, res) => {
-    try {
-        const cities = await City.findByIdAndDelete(req.params.id)
-        res.render('main.ejs');
-    }
-    catch(err) {
-        res.send('Could not delete data');
-    }  
-});
-
-// EDIT - Display edit form for a city
-app.get('/cities/:id/edit', isLoggedIn, async (req, res) => {
-    try {
-        const cities = await City.findById(req.params.id);  
-        console.log(req.user._id)
-        res.render('cities/update.ejs', {cities, currentUser: req.user});
-    }
-    catch(err) {
-        res.send('Something went wrong');
-    }
-});
-
-// UPDATE - After changes update/save changes for a city
-app.put('/update/:id', isLoggedIn, async (req, res) => {
-    try {
-        const update = await City.findByIdAndUpdate(req.params.id, {
-            city: req.body.city= req.sanitize(req.body.city),
-            country: req.body.country = req.sanitize(req.body.country),
-            image: req.body.image = req.sanitize(req.body.image),
-            description: req.body.description = req.sanitize(req.body.description)
-        });
-
-        const cities = await City.find();
-        console.log(cities);
-        res.render('cities/index.ejs', {cities});
-    }
-    catch(err) {
-        res.send('Something went wrong');
-    }
-});
 
 // Show all comments
 app.get('/comments', async (req, res) => {
@@ -268,9 +156,9 @@ app.post('/cities/:id/comments', isLoggedIn, async (req, res) => {
 app.get('/signup', (req, res) => {
     let errors = '';
     res.render('user/signup.ejs', {errors});
-});
-
-app.post('/signup', async (req, res, next) => {
+  });
+  
+  app.post('/signup', async (req, res, next) => {
     const {email, username, password} = req.body; // destructure the body request obtained from client/browser
     
     try {
@@ -295,46 +183,50 @@ app.post('/signup', async (req, res, next) => {
             }
         });
     }
-});
-
-// Login Routes
-app.get('/login', (req, res) => {
+  });
+  
+  // Login Routes
+  app.get('/login', (req, res) => {
     
     const flashMessages = res.locals.getMessages();  
     console.log('flash', flashMessages);
-
+  
     if(flashMessages.error) {
         res.render('user/login.ejs', {errors: flashMessages.error});
     } else {
         let errors = ''; 
         res.render('user/login.ejs', {errors});
     }    
-});
-
-app.post('/login', passport.authenticate('local', {
+  });
+  
+  app.post('/login', passport.authenticate('local', {
     failureRedirect: '/login',
     successRedirect: '/cities',
     failureFlash: true
-})); 
+  })); 
   
-app.get('/profile', (req, res) => {
+  app.get('/profile', (req, res) => {
     res.send('You are now loged in');
-});
-
-// Logout Route
-app.get('/logout', (req, res) => {
+  });
+  
+  // Logout Route
+  app.get('/logout', (req, res) => {
     req.session.destroy( ( err ) => {
         res.redirect('/cities');
     });
-});
-
-function isLoggedIn(req, res, next) {
+  });
+  
+  /* function isLoggedIn(req, res, next) {
     if(req.isAuthenticated()) {
         return next();
     }
     console.log(req.path, req.originalUrl);
     res.redirect('/login');
-};
+  };
+ */
+
+
+
 
 app.get('/userdata', (req, res) => {
    if(req.user) {
@@ -343,4 +235,7 @@ app.get('/userdata', (req, res) => {
        res.send('user is not signed in');
    }    
 });
+
+
+
 
