@@ -2,11 +2,12 @@
     
     <div class="container">
         <h3>Add your favourite city</h3>    
-        <form action="/city/new" method="POST"><!-- encytpe defined for using file elements -->
+        <form action="/city/new" method="POST" enctype="multipart/form-data"><!-- encoding type defined for using file elements -->
             <input type="text" name="city" placeholder="city name" class="form-control mb-2">
             <input type="text" name="country" placeholder="country" class="form-control mb-2">
             <input type="text" name="image" placeholder="image url" class="form-control mb-2">
             <input type="file" name="image" id="image">
+            
             <textarea class="form-control" type="text" name="description"></textarea></br>
             <a href="/" class="btn btn-secondary mb-2">Cancel</a>
             <button type="submit" class="btn btn-primary mb-2">Submit</button>

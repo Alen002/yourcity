@@ -66,7 +66,12 @@ router.get('/new', isLoggedIn, (req, res) => {
 
 // CREATE - add new city to db
 router.post('/city/new', isLoggedIn, async (req, res) => {
-  const city = new City ({
+
+try {
+  res.send(req.body);
+}
+
+  /* const city = new City ({
       city: req.body.city= req.sanitize(req.body.city),
       country: req.body.country = req.sanitize(req.body.country),
       image: req.body.image = req.sanitize(req.body.image),
@@ -77,7 +82,7 @@ router.post('/city/new', isLoggedIn, async (req, res) => {
   try {
       const addData = await city.save();
       res.json(addData);
-  }
+  } */
   catch(err) {
       res.send('Error: Could not save city');
   }
