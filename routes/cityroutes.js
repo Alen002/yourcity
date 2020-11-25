@@ -58,14 +58,14 @@ router.get('/cities/:id', async (req, res) => {
 });
 
 /* Routes for manipulating data */
-
 // NEW - Display form to create a new city
-router.get('/cities/new', isLoggedIn, (req, res) => {
-  res.render('cities/new.ejs', {currentUser: req.user});
+router.get('/new', isLoggedIn, (req, res) => {
+  res.render('cities/new.ejs', {currentUser: req.user} );
+  /* res.render('cities/new.ejs'); */
 });
 
 // CREATE - add new city to db
-router.post('/cities', isLoggedIn, async (req, res) => {
+router.post('/city/new', isLoggedIn, async (req, res) => {
   const city = new City ({
       city: req.body.city= req.sanitize(req.body.city),
       country: req.body.country = req.sanitize(req.body.country),
@@ -82,6 +82,9 @@ router.post('/cities', isLoggedIn, async (req, res) => {
       res.send('Error: Could not save city');
   }
 });
+
+
+
 
 // DELETE - Delete city 
 router.delete('/cities/:id', isLoggedIn, async (req, res) => {
@@ -124,5 +127,7 @@ router.put('/update/:id', isLoggedIn, async (req, res) => {
       res.send('Something went wrong');
   }
 });
+
+
 
 module.exports = router;

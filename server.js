@@ -22,7 +22,7 @@ const User = require('./models/user');
 
 // middleware routes and functions
 const checkdata = require('./routes/checkdata');
-const city = require('./routes/cityroutes');
+const cityroutes = require('./routes/cityroutes');
 const {isLoggedIn} = require('./middleware');
 const commentroutes = require('./routes/commentroutes');
 
@@ -105,7 +105,7 @@ app.get('/', (req, res) => {
 });
   
 app.use(checkdata);
-app.use(city);
+app.use(cityroutes);
 app.use(commentroutes);
 
 /********* Authentification routes *********/
@@ -181,7 +181,4 @@ app.get('/userdata', (req, res) => {
        res.send('user is not signed in');
    }    
 });
-
-
-
 

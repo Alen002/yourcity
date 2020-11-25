@@ -3,9 +3,8 @@ const router = express.Router();
 
 // Import mongodb models
 const City = require('../models/city');
-const Comment = require('../models/comment');
-const User = require('../models/user');
-
+/* const Comment = require('../models/comment');
+const User = require('../models/user'); */
 
 router.get('/allcities', async (req, res) => {   
   try {
@@ -43,7 +42,7 @@ router.get('/commentsauthor', async (req, res) => {
 });
 
 router.get('/test', (req, res) => {
-    res.send('hdfjgskdfhgjklsfdhlgjksh')
+    res.send('This is a test');
 });
 
 module.exports = router;

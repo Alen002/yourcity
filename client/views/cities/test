@@ -2,7 +2,7 @@
     
     <div class="container">
         <h3>Add your favourite city</h3>    
-        <form action="/city/new" method="POST"><!-- encytpe defined for using file elements -->
+        <form action="/cities" method="POST" enctype="multipart/form-data"><!-- encytpe defined for using file elements -->
             <input type="text" name="city" placeholder="city name" class="form-control mb-2">
             <input type="text" name="country" placeholder="country" class="form-control mb-2">
             <input type="text" name="image" placeholder="image url" class="form-control mb-2">
