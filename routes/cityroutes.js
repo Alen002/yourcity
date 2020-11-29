@@ -67,6 +67,7 @@ router.get('/new', isLoggedIn, (req, res) => {
 });
 
 // CREATE - add new city to db
+<<<<<<< HEAD
 router.post('/city/new', upload.single('image'), isLoggedIn, async (req, res) => {  //upload.single() we get one file
     console.log('this is the file', req.file); 
     const city = new City ({
@@ -84,6 +85,29 @@ router.post('/city/new', upload.single('image'), isLoggedIn, async (req, res) =>
     catch(err) {
         res.send('Error: Could not save city');
     }
+=======
+router.post('/city/new', isLoggedIn, async (req, res) => {
+
+try {
+  res.send(req.body);
+}
+
+  /* const city = new City ({
+      city: req.body.city= req.sanitize(req.body.city),
+      country: req.body.country = req.sanitize(req.body.country),
+      image: req.body.image = req.sanitize(req.body.image),
+      author: req.user._id, // derived from currentUser
+      description: req.body.description = req.sanitize(req.body.description)
+  });
+
+  try {
+      const addData = await city.save();
+      res.json(addData);
+  } */
+  catch(err) {
+      res.send('Error: Could not save city');
+  }
+>>>>>>> 40203f8c9b6fbc6eec5270cdcfdbd75bd7327b6a
 });
 
 
