@@ -1,5 +1,11 @@
-const PORT = 5000;
+if(process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
+
 var path = require('path');
+const PORT = process.env.PORT || 5000
+dotenv = require('dotenv').config();
+
 const express = require('express');
 methodOverride = require('method-override');
 const morgan = require('morgan');
