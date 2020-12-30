@@ -7,8 +7,8 @@ const upload = multer({ dest: 'uploads/' });
 const City = require('../models/city');
 const Comment = require('../models/comment');
 const User = require('../models/user');
-
 const { isLoggedIn } = require('../middleware');
+const {storage} = require('../cloudinary/index');
 
 
 // INDEX - Display all city collections from the db
@@ -67,7 +67,7 @@ router.get('/new', isLoggedIn, (req, res) => {
 });
 
 // CREATE - add new city to db
-router.post('/city/new', upload.single('image'), isLoggedIn, async (req, res) => {  //upload.single() we get one file
+router.post('/city/new', upload.single('image'), isLoggedIn, async (req, res) => {  //upload.single('image') we get one file
     console.log('this is the file', req.file); 
     const city = new City ({
          city: req.body.city= req.sanitize(req.body.city),

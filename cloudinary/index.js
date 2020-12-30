@@ -15,3 +15,8 @@ const storage = new CloudinaryStorage({
   folder: 'CityImages', // The folder in cloudinary
   allowedFormats: ['png', 'jpg', 'jpeg']
 });
+
+module.exports = {
+  cloudinary,
+  storage
+}
