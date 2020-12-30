@@ -1,14 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const multer  = require('multer');
-const upload = multer({ dest: 'uploads/' });
+const {storage} = require('../cloudinary/index');
+const upload = multer({ storage });  //const upload = multer({ dest: 'uploads/' });
 
 // Import mongodb models
 const City = require('../models/city');
 const Comment = require('../models/comment');
 const User = require('../models/user');
 const { isLoggedIn } = require('../middleware');
-const {storage} = require('../cloudinary/index');
+
 
 
 // INDEX - Display all city collections from the db

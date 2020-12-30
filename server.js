@@ -31,8 +31,7 @@ const checkdata = require('./routes/checkdata');
 const cityroutes = require('./routes/cityroutes');
 const {isLoggedIn} = require('./middleware');
 const commentroutes = require('./routes/commentroutes');
-const index = require('./cloudinary/index');
-
+/* const {storage} = require('./cloudinary/index'); */
 
 // seeds.js file will run when the server starts
 const seed = require('./models/seeds'); 
