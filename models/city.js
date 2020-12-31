@@ -14,7 +14,7 @@ const citySchema = new mongoose.Schema({
     },
     country: {
         type: String,
-        required: false
+        required: true
     },
     images:   //image: { type: String, required: false},
         {

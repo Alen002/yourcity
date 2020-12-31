@@ -80,7 +80,7 @@ router.post('/city/new', upload.single('images'), isLoggedIn, async (req, res) =
 
     try {
         const addData = await city.save();
-        res.json(addData);
+        res.render('main.ejs');
     }
     catch(err) {
         res.send('Error: Could not save city');
