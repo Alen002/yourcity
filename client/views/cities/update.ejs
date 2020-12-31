@@ -2,13 +2,36 @@
     
     <div class="container">
         <h3>Update Data</h3>    
-        <form action="/update/<%= cities._id %>?_method=PUT" method="POST">
+            <form action="/update/<%= cities._id %>?_method=PUT" method="POST" enctype="multipart/form-data"><!-- multipart is important to upload files -->
+            <h6>Name</h6>
             <input type="text" name="city" placeholder="city name" class="form-control mb-2" value="<%= cities.city %>">
+            <h6>Country</h6>
             <input type="text" name="country" placeholder="country" class="form-control mb-2" value="<%= cities.country %>">
-            <input type="text" name="image" placeholder="image" class="form-control mb-2" value="<%= cities.image %>">
-            <textarea class="form-control" type="text" name="description"><%= cities.description %></textarea></br>
-            <a href="/" class="btn btn-secondary mb-2">Cancel</a>
-            <button type="submit" class="btn btn-primary mb-2">Submit</button>
+            <h6>Image of the Post</h6> 
+            <!-- <input type="text" name="images" placeholder="image" class="form-control mb-2" id="images" value="<%= cities.images %>"> -->
+            <img src="<%= cities.images %>" class="img-thumbnail">
+
+            <h6></p>Select a New Image</h6>
+            <input type="file" name="images" id="image">
+
+            <!-- <div class="form-check-inline">
+                <input type="checkbox" name="deleteImage" value="<%= cities.filename %>">
+                <%= cities.images %>
+               
+            </div>
+            <label for="">Delete</label>
+            </br> -->
+
+
+
+
+       <!--<button class="btn btn-danger" onclick="document.getElementById('images').value = ''">Delete Image</button>  -->
+            <p>
+                <h6>Description</h6>
+                <textarea class="form-control" type="text" name="description"><%= cities.description %></textarea></br>
+                <a href="/" class="btn btn-secondary mb-2">Cancel</a>
+                <button type="submit" class="btn btn-primary mb-2">Submit</button>
+            </p>
         </form>
     </div>
     <a href="/cities">Back</a>

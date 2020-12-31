@@ -12,8 +12,10 @@ cloudinary.config({
 // Instance of cloudinary storage
 const storage = new CloudinaryStorage({
   cloudinary,
-  folder: 'CityImages', // The folder in cloudinary
-  allowedFormats: ['png', 'jpg', 'jpeg']
+  params: {
+    folder: 'CityImages',
+    allowedFormats: ['png', 'jpg', 'jpeg']
+  }
 });
 
 module.exports = {

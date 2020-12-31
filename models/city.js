@@ -16,9 +16,11 @@ const citySchema = new mongoose.Schema({
         type: String,
         required: false
     },
-    image: {
-        type: String,
-        required: false
+    images:   //image: { type: String, required: false},
+        {
+            type: String
+            /* url: String,
+            filename: String */
     },
     description: {
         type: String,

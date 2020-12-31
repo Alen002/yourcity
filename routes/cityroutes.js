@@ -20,7 +20,7 @@ router.get('/cities', async (req, res) => {
         res.render('cities/index.ejs', {cities, currentUser: req.user})
     }
     catch(err) {
-    res.send('Cound not retrieve data');        
+    res.send('Could not retrieve data');        
     }  
 });
 
@@ -68,12 +68,12 @@ router.get('/new', isLoggedIn, (req, res) => {
 });
 
 // CREATE - add new city to db
-router.post('/city/new', upload.single('image'), isLoggedIn, async (req, res) => {  //upload.single('image') we get one file
+router.post('/city/new', upload.single('images'), isLoggedIn, async (req, res) => {  //upload.single('image') we get one file, upload.array for several files
     console.log('this is the file', req.file); 
     const city = new City ({
          city: req.body.city= req.sanitize(req.body.city),
          country: req.body.country = req.sanitize(req.body.country),
-         image: req.body.image = req.file.path,   //req.sanitize(req.body.image)
+         images: req.sanitize(req.file.path), //req.sanitize(req.body.image) //images: req.body.images = req.files
          author: req.user._id, // derived from currentUser
          description: req.body.description = req.sanitize(req.body.description)
     });
@@ -111,13 +111,13 @@ router.get('/cities/:id/edit', isLoggedIn, async (req, res) => {
     }
 });
 
-// UPDATE - After changes update/save changes for a city
-router.put('/update/:id', isLoggedIn, async (req, res) => {
+// UPDATE - Change city data when loged in
+router.put('/update/:id', upload.single('images'), isLoggedIn, async (req, res) => {
     try {
         const update = await City.findByIdAndUpdate(req.params.id, {
             city: req.body.city= req.sanitize(req.body.city),
             country: req.body.country = req.sanitize(req.body.country),
-            image: req.body.image = req.sanitize(req.body.image),
+            images: req.file.path,
             description: req.body.description = req.sanitize(req.body.description)
         }); 
         const cities = await City.find();
@@ -128,7 +128,5 @@ router.put('/update/:id', isLoggedIn, async (req, res) => {
         res.send('Something went wrong');
     }
 });
-
-
-
+ 
 module.exports = router;
