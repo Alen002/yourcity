@@ -16,13 +16,13 @@ const geoCoder = geocoding({ accessToken: mapbox });
 router.get('/mapbox', async (req, res) => {
   try {
     await geoCoder.forwardGeocode({
-      query: 'Ho Chi Minh City, Vietnam',  // 'Ho Chi Minh City, Vietnam'
+      query: 'Ho Chi Minh City, Vietnam',  // 'Ho Chi Minh City, Vietnam' [Name and country] 
       limit: 1  // limit the geocode results for a specific request 
     })
       .send()
       .then(response => {
         let resultGeo = response.body;
-        res.json(resultGeo.features[0].geometry.coordinates); // result is send back to the client as json data
+        res.send(resultGeo.features[0].geometry.coordinates.reverse()); // result is send back to the client -> [longitude, latitude]
       });
   } 
     catch(err) {

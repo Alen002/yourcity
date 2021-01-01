@@ -16,6 +16,19 @@ const citySchema = new mongoose.Schema({
         type: String,
         required: true
     },
+
+    geolocation: {
+        type: {
+          type: String, 
+          enum: ['Point'],
+          required: true
+        },
+        coordinates: {
+          type: [Number],
+          required: true
+        }
+    },
+ 
     images:   //image: { type: String, required: false},
         {
             type: String

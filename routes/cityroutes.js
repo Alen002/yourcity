@@ -10,6 +10,11 @@ const Comment = require('../models/comment');
 const User = require('../models/user');
 const { isLoggedIn } = require('../middleware');
 
+// mapbox
+const geocoding = require('@mapbox/mapbox-sdk/services/geocoding');
+const mapbox = process.env.MAPBOX;
+const geoCoder = geocoding({ accessToken: mapbox }); 
+
 
 
 // INDEX - Display all city collections from the db
@@ -70,9 +75,17 @@ router.get('/new', isLoggedIn, (req, res) => {
 // CREATE - add new city to db
 router.post('/city/new', upload.single('images'), isLoggedIn, async (req, res) => {  //upload.single('image') we get one file, upload.array for several files
     console.log('this is the file', req.file); 
+
+    // Get coordinates from mapbox
+    const georesult = await geoCoder.forwardGeocode({
+        query: 'Ho Chi Minh City, Vietnam', 
+        limit: 1 
+      }).send();
+  
     const city = new City ({
          city: req.body.city= req.sanitize(req.body.city),
          country: req.body.country = req.sanitize(req.body.country),
+         geolocation: georesult.body.features[0].geometry, // point 0 is longitude, point 1 is latitude
          images: req.sanitize(req.file.path), //req.sanitize(req.body.image) //images: req.body.images = req.files
          author: req.user._id, // derived from currentUser
          description: req.body.description = req.sanitize(req.body.description)
