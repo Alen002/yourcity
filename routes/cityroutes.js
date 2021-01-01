@@ -78,7 +78,7 @@ router.post('/city/new', upload.single('images'), isLoggedIn, async (req, res) =
 
     // Get coordinates from mapbox
     const georesult = await geoCoder.forwardGeocode({
-        query: 'Ho Chi Minh City, Vietnam', 
+        query: `${req.body.city}, ${req.body.country}`, // City and country
         limit: 1 
       }).send();
   
