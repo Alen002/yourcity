@@ -7,8 +7,8 @@ This is the Show Details Page
 Posted by <%= cities.author.username %></br>
 <img src="<%= cities.images %>">
 
-<div id="latitude"> <%= cities.geolocation.coordinates[1]%> </div>
-<div id="longitude"> <%= cities.geolocation.coordinates[0]%> </div>
+Latitude:<div id="latitude"> <%= cities.geolocation.coordinates[1]%> </div>
+Longitude:<div id="longitude"> <%= cities.geolocation.coordinates[0]%> </div>
 
 <p><%= cities.description %></p>
 <!-- Reference to comments model-->
@@ -22,13 +22,23 @@ Posted by <%= cities.author.username %></br>
 </p>
 
 <!-- Mapbox js code for displaying the map with the location -->
-<div id='map' style='width: 400px; height: 300px;'></div>
+<div id='map' class="col-xl-12" style='width: 400px; height: 400px'></div></br>
+
+<!-- Radio buttons to switch between street and sattelite view -->
+<div id="menu">
+    <input type="radio" id="streets-v11" name="streets>
+    <label for="streets">Street View</label>
+    <input type="radio" id="satellite-v9" name="streets>
+    <label for="female">Satellite View</label><br>
+</div>
+
+
 <script>
     // Get the coordinates   
     let lng = document.getElementById('longitude').innerHTML;
     let lat = document.getElementById('latitude').innerHTML;   
     
-    mapboxgl.accessToken = '<%- process.env.MAPBOX %>'
+    mapboxgl.accessToken = '<%- process.env.MAPBOX %>';
     var map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
@@ -36,6 +46,20 @@ Posted by <%= cities.author.username %></br>
         zoom: 9 // starting zoom
     });
 
+  
+    // Switch view to street or sattelite based on clicked radio buttons
+    var layerList = document.getElementById('menu');
+    var inputs = layerList.getElementsByTagName('input');
+
+    switchLayer = (layer) => {
+        var layerId = layer.target.id;
+        map.setStyle('mapbox://styles/mapbox/' + layerId);
+    }
+
+    for(var i = 0; i < inputs.length; i++) {
+        inputs[i].onclick = switchLayer;
+    }
+    
     // marker on map
     var marker = new mapboxgl.Marker()
     .setLngLat([lng, lat])
