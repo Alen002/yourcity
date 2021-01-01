@@ -31,6 +31,7 @@ const checkdata = require('./routes/checkdata');
 const cityroutes = require('./routes/cityroutes');
 const {isLoggedIn} = require('./middleware');
 const commentroutes = require('./routes/commentroutes');
+const mapbox = require('./routes/mapbox');
 /* const {storage} = require('./cloudinary/index'); */
 
 // seeds.js file will run when the server starts
@@ -114,6 +115,7 @@ app.get('/', (req, res) => {
 app.use(checkdata);
 app.use(cityroutes);
 app.use(commentroutes);
+app.use(mapbox);
 
 /********* Authentification routes *********/
 
