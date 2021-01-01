@@ -5,6 +5,7 @@ This is the Show Details Page
 <h3><%= cities.country %></h3>
 Posted by <%= cities.author.username %></br>
 <img src="<%= cities.images %>">
+<p>Latitude: <%= cities.geolocation.coordinates[1]%> Longitude: <%= cities.geolocation.coordinates[0]%></p>
 <p><%= cities.description %></p>
 <!-- Reference to comments model-->
 <p>
