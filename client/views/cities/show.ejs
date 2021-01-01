@@ -1,11 +1,15 @@
 <%- include("../partials/header") %>
 This is the Show Details Page
 
+<script type="text/javascript" src="/script/script.js"></script>
 <h2><%= cities.city %></h2>
 <h3><%= cities.country %></h3>
 Posted by <%= cities.author.username %></br>
 <img src="<%= cities.images %>">
-<p>Latitude: <%= cities.geolocation.coordinates[1]%> Longitude: <%= cities.geolocation.coordinates[0]%></p>
+
+<div id="latitude"> <%= cities.geolocation.coordinates[1]%> </div>
+<div id="longitude"> <%= cities.geolocation.coordinates[0]%> </div>
+
 <p><%= cities.description %></p>
 <!-- Reference to comments model-->
 <p>
@@ -17,7 +21,21 @@ Posted by <%= cities.author.username %></br>
     <% }) %>
 </p>
 
-<a href="/cities">Back to cities</a></br>
+<!-- Mapbox js code for displaying the map with the location -->
+<div id='map' style='width: 400px; height: 300px;'></div>
+<script>
+    // Get the coordinates   
+    let lng = document.getElementById('longitude').innerHTML;
+    let lat = document.getElementById('latitude').innerHTML;   
+    
+    mapboxgl.accessToken = '<%- process.env.MAPBOX %>'
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
+        center: [lng, lat], // starting position [lng, lat]
+        zoom: 9 // starting zoom
+    });
+</script>
 
 
 <!-- <% if (currentUser) { %>
@@ -27,7 +45,6 @@ Posted by <%= cities.author.username %></br>
     <% } %></br>
 Author of the city: <%= cities.author._id %> -->
     
-
 <!-- Authorization - Only the owner of the city can update od delete it -->
 <% if(currentUser && cities.author.equals(currentUser._id)) { %>
     <!-- DELETE data entry -->
@@ -37,8 +54,7 @@ Author of the city: <%= cities.author._id %> -->
     <!-- UPDATE data entry -->
     <form action="/cities/<%= cities._id %>/edit" method="GET">
         <button class="btn btn-secondary mb-2">UPDATE CITY</button>
-    </form>
-    
+    </form>    
 <% } %>
 
 <!-- ADD new comment - Everyone can add comments who is logged in -->
@@ -47,5 +63,7 @@ Author of the city: <%= cities.author._id %> -->
         <button class="btn btn-secondary mb-2">New Comment</button>
     </form>
 <% } %>
+
+<a href="/cities">Back to cities</a></br>
 
 <%- include("../partials/footer") %>
