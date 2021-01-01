@@ -6,6 +6,7 @@ dotenv = require('dotenv').config();
 
 const express = require('express');
 const router = express.Router();
+
 // mapbox
 const geocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 const mapbox = process.env.MAPBOX;
@@ -15,13 +16,13 @@ const geoCoder = geocoding({ accessToken: mapbox });
 router.get('/mapbox', async (req, res) => {
   try {
     await geoCoder.forwardGeocode({
-      query: 'Ho Chi Minh City, Vietnam',
-      limit: 2
+      query: 'Ho Chi Minh City, Vietnam',  // 'Ho Chi Minh City, Vietnam'
+      limit: 1  // limit the geocode results for a specific request 
     })
       .send()
       .then(response => {
-        const result = response.body;
-        res.json(result);
+        let resultGeo = response.body;
+        res.json(resultGeo.features[0].geometry.coordinates); // result is send back to the client as json data
       });
   } 
     catch(err) {
@@ -29,4 +30,5 @@ router.get('/mapbox', async (req, res) => {
   }
 });
   
+
 module.exports = router;
