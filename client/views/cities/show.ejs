@@ -35,6 +35,11 @@ Posted by <%= cities.author.username %></br>
         center: [lng, lat], // starting position [lng, lat]
         zoom: 9 // starting zoom
     });
+
+    // marker on map
+    var marker = new mapboxgl.Marker()
+    .setLngLat([lng, lat])
+    .addTo(map);
 </script>
 
 
