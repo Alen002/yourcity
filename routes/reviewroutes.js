@@ -6,8 +6,10 @@ const City = require('../models/city');
 const Review = require('../models/review');
 const User = require('../models/user');
 
+const { isLoggedIn } = require('../middleware');
+
 // CREATE - Create a new review and push it to the related city
-router.post('/cities/:id/reviews', /* isLoggedIn, */ async (req, res) => {
+router.post('/cities/:id/reviews', isLoggedIn, async (req, res) => {
   const review = new Review ({
       review: req.sanitize(req.body.review),
       rating: req.sanitize(req.body.rating)
