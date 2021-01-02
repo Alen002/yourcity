@@ -41,7 +41,7 @@
     var map = new mapboxgl.Map({
         container: 'map',
         style: `mapbox://styles/mapbox/${display}`,
-        center: [-103.59179687498357, 40.66995747013945],
+        center: [-103.59179687498357, 40.66995747013945],   // 11.559149726469974, 104.84623146087296 //
         zoom: 3
     });
     
@@ -58,11 +58,7 @@
         inputs[i].onclick = switchLayer;
     }
 
-
-
-
-
-    // Populate map with marker and popup  
+    // Populate map with marker
     cities.forEach(result => {
         // Create marker
         new mapboxgl.Marker()
@@ -75,9 +71,6 @@
         .setHTML(`<p>${result.city}</p>`)   
         .addTo(map); */
     });
-
-
-
 
 </script>
 
