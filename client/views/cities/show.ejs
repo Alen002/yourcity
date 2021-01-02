@@ -10,17 +10,6 @@ Posted by <%= cities.author.username %></br>
 Latitude:<div id="latitude"> <%= cities.geolocation.coordinates[1]%> </div>
 Longitude:<div id="longitude"> <%= cities.geolocation.coordinates[0]%> </div>
 
-<p><%= cities.description %></p>
-<!-- Reference to comments model-->
-<p>
-    <% cities.comments.forEach((user) => { %>
-        <p> date: <%= user.date %></br>
-        Author: <%= user.author.username%></br>
-        Comment: <%= user.comment %></br>        
-        </p>
-    <% }) %>
-</p>
-
 <!-- Mapbox js code for displaying the map with the location -->
 <div id='map' class="col-xl-12" style='width: 400px; height: 400px'></div></br>
 
@@ -31,10 +20,23 @@ Longitude:<div id="longitude"> <%= cities.geolocation.coordinates[0]%> </div>
     <input type="radio" id="satellite-v9" name="streets>
     <label for="female">Satellite View</label><br>
 </div>
+</br>
+<h5>Comments</h5>
+<p><%= cities.description %></p>
+<!-- Reference to comments model-->
+<p>
+    <% cities.comments.forEach((user) => { %>
+        <p> Date: <%= user.date %></br>
+        Author: <%= user.author.username%></br>
+        Comment: <%= user.comment %></br>        
+        </p>
+    <% }) %>
+</p>
+
 
 
 <script>
-    // Get the coordinates   
+    // Get coordinates   
     let lng = document.getElementById('longitude').innerHTML;
     let lat = document.getElementById('latitude').innerHTML;   
     
