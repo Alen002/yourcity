@@ -5,20 +5,19 @@
 
     <style>
         body { margin: 0; padding: 0; }
-        #map { position: relative; top: 0; bottom: 0; width: 100%; height: 300px; }
+        #map { position: relative; top: 0; bottom: 0; width: 100%; height: 400px; }
     </style>
 
     <!-- Mapbox js code for displaying the map with the location -->
     <div id='map' class="col-xl-12" ></div></br><!-- style='width: 400px; height: 400px'  -->
+    <div id="menu">
+        <input type="radio" id="streets-v11" name="streets>
+        <label for="streets">Street View</label>
+        <input type="radio" id="satellite-v9" name="streets>
+        <label for="female">Satellite View</label><br>
+    </div>
+    </br>
 
-
-    <% cities.forEach(cities => {  %>
-        <p>
-            <%= cities.geolocation.coordinates[0] %>
-            <%= cities.geolocation.coordinates[1] %>
-        </p>
-    <% }) %>
-  
     Display cities
     <% cities.forEach((cities) => { %>
         <div class="cities-background">
@@ -46,14 +45,39 @@
         zoom: 3
     });
     
-    // Populate map with marker location of the cities derived from the database    
+    // Switch view to street or sattelite based on clicked radio buttons
+    var layerList = document.getElementById('menu');
+    var inputs = layerList.getElementsByTagName('input');
+
+    switchLayer = (layer) => {
+        var layerId = layer.target.id;
+        map.setStyle('mapbox://styles/mapbox/' + layerId);
+    }
+
+    for(var i = 0; i < inputs.length; i++) {
+        inputs[i].onclick = switchLayer;
+    }
+
+
+
+
+
+    // Populate map with marker and popup  
     cities.forEach(result => {
+        // Create marker
         new mapboxgl.Marker()
-        .setLngLat(
-        result.geolocation.coordinates)      
+        .setLngLat(result.geolocation.coordinates) 
         .addTo(map)
+
+        // Create popup with name of the city
+        /* new mapboxgl.Popup({ closeOnClick: false })   
+        .setLngLat(result.geolocation.coordinates)
+        .setHTML(`<p>${result.city}</p>`)   
+        .addTo(map); */
     });
 
-    
 
-    </script>
+
+
+</script>
+
