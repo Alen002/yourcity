@@ -6,14 +6,14 @@ const User = require('./user');
 
 // Schema for reviews
 
-const reviewSchema = new.mongoose.Schema({
-    body: { 
+const reviewSchema = new mongoose.Schema({
+    review: { 
         type: String, 
         required: false
     }, 
     rating: {
         type: Number,
-        required: true
+        required: false
     },
 });
 

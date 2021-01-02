@@ -13,7 +13,7 @@ Longitude:<div id="longitude"> <%= cities.geolocation.coordinates[0]%> </div>
 <!-- Mapbox js code for displaying the map with the location -->
 <div id='map' class="col-xl-12" style='width: 400px; height: 400px'></div></br>
 
-<!-- Radio buttons to switch between street and sattelite view -->
+<!-- Radio buttons to switch between street and satellite view -->
 <div id="menu">
     <input type="radio" id="streets-v11" name="streets>
     <label for="streets">Street View</label>
@@ -21,9 +21,24 @@ Longitude:<div id="longitude"> <%= cities.geolocation.coordinates[0]%> </div>
     <label for="female">Satellite View</label><br>
 </div>
 </br>
+<!-- End of radio buttons -->
+
+<!-- Start of review section -->
+<form action="/cities/<%= cities._id %>/reviews" method="POST">
+    <!-- Review text -->
+    <label class="form-label" for="review">Review</label></br>
+    <textarea class="form-control" type="text" name="review" placeholder="Your review"></textarea></br>
+    <!-- Rating from 1 to 5 -->
+    <label class="form-label" for="rating">Rating</label>
+    <input type="range" min="1" max="5" value="0" class="form-control-range" id="rating" name="rating">
+
+    <button type="submit" class="btn btn-primary mb-2">Submit</button>
+</form>
+<!-- End of review section -->
+
+<!-- Start of comments section -->
 <h5>Comments</h5>
 <p><%= cities.description %></p>
-<!-- Reference to comments model-->
 <p>
     <% cities.comments.forEach((user) => { %>
         <p> Date: <%= user.date %></br>
@@ -32,7 +47,7 @@ Longitude:<div id="longitude"> <%= cities.geolocation.coordinates[0]%> </div>
         </p>
     <% }) %>
 </p>
-
+<!-- End of comments section -->
 
 
 <script>

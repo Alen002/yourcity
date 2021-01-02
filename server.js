@@ -24,12 +24,14 @@ const passportLocalMongoose = require('passport-local-mongoose');  */
 // Import mongodb models
 const City = require('./models/city');
 const Comment = require('./models/comment');
+const Review = require('./models/review');
 const User = require('./models/user');
 
 // middleware routes and functions
 const checkdata = require('./routes/checkdata');
 const cityroutes = require('./routes/cityroutes');
 const {isLoggedIn} = require('./middleware');
+const reviewroutes = require('./routes/reviewroutes');
 const commentroutes = require('./routes/commentroutes');
 const mapbox = require('./routes/mapbox');
 /* const {storage} = require('./cloudinary/index'); */
@@ -115,6 +117,7 @@ app.get('/', (req, res) => {
 app.use(checkdata);
 app.use(cityroutes);
 app.use(commentroutes);
+app.use(reviewroutes);
 app.use(mapbox);
 
 /********* Authentification routes *********/
@@ -190,4 +193,8 @@ app.get('/userdata', (req, res) => {
        res.send('user is not signed in');
    }    
 });
+
+
+
+
 
