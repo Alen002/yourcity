@@ -2,6 +2,7 @@
 Show Details Page
 
 <script type="text/javascript" src="/script/script.js"></script>
+
 <h2><%= cities.city %></h2>
 <h3><%= cities.country %></h3>
 Posted by <%= cities.author.username %></br>
@@ -12,8 +13,8 @@ Posted by <%= cities.author.username %></br>
 </div>
 
 <!-- Coordinates for displaying the marker on mapbox-->
-Latitude:<div id="latitude"> <%= cities.geolocation.coordinates[1]%> </div>
-Longitude:<div id="longitude"> <%= cities.geolocation.coordinates[0]%> </div>
+Latitude:<div id="latitude"> <%= cities.geolocation.coordinates[1] %> </div>
+Longitude:<div id="longitude"> <%= cities.geolocation.coordinates[0] %> </div>
 
 <!-- Map display -->
 <div id='map' class="col-xl-12" style='width: 400px; height: 400px'></div></br>
@@ -33,7 +34,20 @@ Longitude:<div id="longitude"> <%= cities.geolocation.coordinates[0]%> </div>
 <form action="/cities/<%= cities._id %>/reviews" method="POST">
     <!-- Rating from 1 to 5 -->
     <label class="form-label" for="rating">Rating</label>
-    <input type="range" min="1" max="5" value="0" class="form-control-range" id="rating" name="rating">
+    <!-- Star rating -->
+    <fieldset class="starability-basic">
+        <legend>First rating:</legend>
+        <input type="radio" id="first-rate1" name="rating" value="1" />
+        <label for="first-rate1" title="Terrible">1 star</label>
+        <input type="radio" id="first-rate2" name="rating" value="2" />
+        <label for="first-rate2" title="Not good">2 stars</label>
+        <input type="radio" id="first-rate3" name="rating" value="3" />
+        <label for="first-rate3" title="Average">3 stars</label>
+        <input type="radio" id="first-rate4" name="rating" value="4" />
+        <label for="first-rate4" title="Very good">4 stars</label>
+        <input type="radio" id="first-rate5" name="rating" value="5" />
+        <label for="first-rate5" title="Amazing">5 stars</label>
+    </fieldset>
     <!-- Review text -->
     <label class="form-label" for="review">Review</label></br>
     <textarea class="form-control" type="text" name="review" placeholder="Your review" required></textarea></br>
@@ -47,8 +61,12 @@ Longitude:<div id="longitude"> <%= cities.geolocation.coordinates[0]%> </div>
     <div class="container-fluid">
         <h4>Reviews</h4>
         <% cities.reviews.forEach((review) => { %>
-            <h5><%= review.author.username%></h5>
-            <%= review.rating %></br>       
+            <h6><%= review.author.username%></h6>
+            <!-- Rating: <%= review.rating %></br> -->
+            <!-- Star rating --> 
+            <p class="starability-result" data-rating="<%= review.rating %>">
+                Rated: <%= review.rating %> stars
+            </p>
             <%= review.review %></br>       
         <% }) %>           
     </div>

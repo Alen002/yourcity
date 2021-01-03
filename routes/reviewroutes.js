@@ -20,7 +20,6 @@ router.post('/cities/:id/reviews', isLoggedIn, async (req, res) => {
       const cities = await City.findById(req.params.id);
       cities.reviews.push(review); 
       cities.save();
-       
       res.redirect('/cities');
   } catch(err) {
       res.send('Something went wrong while trying to save the comment to the db');
