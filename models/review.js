@@ -5,8 +5,11 @@ const User = require('./user');
 
 
 // Schema for reviews
-
 const reviewSchema = new mongoose.Schema({
+    date: { 
+        type: Number, 
+        default: new Date()
+    }, 
     review: { 
         type: String, 
         required: false
@@ -15,6 +18,11 @@ const reviewSchema = new mongoose.Schema({
         type: Number,
         required: false
     },
+    // Object referencing to User schema/model
+    author: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }
 });
 
 module.exports = mongoose.model('Review', reviewSchema);

@@ -47,11 +47,12 @@ router.post('/cities/search', async (req, res) => {
     }
 });
 
-// SHOW - Display city details and related user comments
+// SHOW - Display city details, related user comments and reviews 
 router.get('/cities/:id', async (req, res) => {
     try {
         const cities = await City.findById(req.params.id)
-            .populate({path: 'comments', populate: {path: 'author'}})
+            .populate({path: 'comments', populate: {path: 'author'}}) 
+            .populate({path: 'reviews', populate: {path: 'author'}}) 
             .populate('author')
 
            /*  .exec((err, cities) => {
@@ -124,7 +125,7 @@ router.get('/cities/:id/edit', isLoggedIn, async (req, res) => {
     }
 });
 
-// UPDATE - Change city data when loged in
+// UPDATE - Change city data when logged in
 router.put('/update/:id', upload.single('images'), isLoggedIn, async (req, res) => {
     try {
         const update = await City.findByIdAndUpdate(req.params.id, {

@@ -10,7 +10,6 @@ const commentSchema = new mongoose.Schema({
         type: Number, 
         default: new Date()
     }, 
-    
     // Object referencing to User schema/model
     author: {
         type: mongoose.Schema.Types.ObjectId,

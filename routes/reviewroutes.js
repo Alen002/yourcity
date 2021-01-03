@@ -12,7 +12,8 @@ const { isLoggedIn } = require('../middleware');
 router.post('/cities/:id/reviews', isLoggedIn, async (req, res) => {
   const review = new Review ({
       review: req.sanitize(req.body.review),
-      rating: req.sanitize(req.body.rating)
+      rating: req.sanitize(req.body.rating),
+      author: req.user._id
   });
   review.save();
   try {
@@ -26,6 +27,17 @@ router.post('/cities/:id/reviews', isLoggedIn, async (req, res) => {
   }
 }); 
 
+// Show all reviews
+router.get('/reviews', async (req, res) => {
+  try {
+      const reviews = await Review.find().populate('author');
+      res.json({reviews});
+      
+  } 
+  catch(err) {
+      console.log('Cannot display comments');
+  }
+});
 // Just for testing purposes
 /* router.post('/cities/:id/reviews', (req, res) => {   
   let object = {

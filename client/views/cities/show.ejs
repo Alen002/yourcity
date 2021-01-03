@@ -1,5 +1,5 @@
 <%- include("../partials/header") %>
-This is the Show Details Page
+Show Details Page
 
 <script type="text/javascript" src="/script/script.js"></script>
 <h2><%= cities.city %></h2>
@@ -7,13 +7,18 @@ This is the Show Details Page
 Posted by <%= cities.author.username %></br>
 <img src="<%= cities.images %>">
 
+<div>
+    <%= cities.description %>
+</div>
+
+<!-- Coordinates for displaying the marker on mapbox-->
 Latitude:<div id="latitude"> <%= cities.geolocation.coordinates[1]%> </div>
 Longitude:<div id="longitude"> <%= cities.geolocation.coordinates[0]%> </div>
 
-<!-- Mapbox js code for displaying the map with the location -->
+<!-- Map display -->
 <div id='map' class="col-xl-12" style='width: 400px; height: 400px'></div></br>
 
-<!-- Radio buttons to switch between street and satellite view -->
+<!-- Start of radio buttons to switch between street and satellite view -->
 <div id="menu">
     <input type="radio" id="streets-v11" name="streets>
     <label for="streets">Street View</label>
@@ -23,20 +28,32 @@ Longitude:<div id="longitude"> <%= cities.geolocation.coordinates[0]%> </div>
 </br>
 <!-- End of radio buttons -->
 
-<!-- Start of review section -->
+<!-- Start of review section for entering a review -->
 <h4>Leave a Rating</h4>
 <form action="/cities/<%= cities._id %>/reviews" method="POST">
     <!-- Rating from 1 to 5 -->
     <label class="form-label" for="rating">Rating</label>
     <input type="range" min="1" max="5" value="0" class="form-control-range" id="rating" name="rating">
-
     <!-- Review text -->
     <label class="form-label" for="review">Review</label></br>
     <textarea class="form-control" type="text" name="review" placeholder="Your review" required></textarea></br>
-
+    
     <button type="submit" class="btn btn-success mb-2">Submit</button>
 </form>
-<!-- End of review section -->
+<!-- End of review section for entering a review -->
+
+<!-- Display reviews entered by users -->
+<div class="reviews">
+    <div class="container-fluid">
+        <h4>Reviews</h4>
+        <% cities.reviews.forEach((review) => { %>
+            <h5><%= review.author.username%></h5>
+            <%= review.rating %></br>       
+            <%= review.review %></br>       
+        <% }) %>           
+    </div>
+ </div> 
+<!-- End of display reviews entered by users -->
 
 <!-- Start of comments section -->
 <h5>Comments</h5>
@@ -51,7 +68,6 @@ Longitude:<div id="longitude"> <%= cities.geolocation.coordinates[0]%> </div>
 </p>
 <!-- End of comments section -->
 
-
 <script>
     // Get coordinates   
     let lng = document.getElementById('longitude').innerHTML;
@@ -65,7 +81,6 @@ Longitude:<div id="longitude"> <%= cities.geolocation.coordinates[0]%> </div>
         zoom: 9 // starting zoom
     });
 
-  
     // Switch view to street or sattelite based on clicked radio buttons
     var layerList = document.getElementById('menu');
     var inputs = layerList.getElementsByTagName('input');
@@ -84,7 +99,6 @@ Longitude:<div id="longitude"> <%= cities.geolocation.coordinates[0]%> </div>
     .setLngLat([lng, lat])
     .addTo(map);
 </script>
-
 
 <!-- <% if (currentUser) { %>
     <p> Current user is : <%= currentUser._id %></p>
