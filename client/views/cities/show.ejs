@@ -1,12 +1,13 @@
 <%- include("../partials/header") %>
-Show Details Page
 
+<link rel="stylesheet" type="text/css" href="/styles/show.css" media="screen"/>
 <script type="text/javascript" src="/script/script.js"></script>
 
+<img src="<%= cities.images %>">
 <h2><%= cities.city %></h2>
 <h3><%= cities.country %></h3>
 Posted by <%= cities.author.username %></br>
-<img src="<%= cities.images %>">
+
 
 <div>
     <%= cities.description %>
