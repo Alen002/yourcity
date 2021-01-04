@@ -139,7 +139,7 @@ router.put('/update/:id', upload.single('images'), isLoggedIn, async (req, res) 
         res.render('cities/index.ejs', {cities});
     }
     catch(err) {
-        res.send('Something went wrong');
+        res.send('Something went wrong while trying to submit the update');
     }
 });
  

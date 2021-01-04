@@ -99,16 +99,13 @@ Longitude:<div id="longitude"> <%= cities.geolocation.coordinates[0] %> </div>
         center: [lng, lat], // starting position [lng, lat]
         zoom: 9 // starting zoom
     });
-
     // Switch view to street or sattelite based on clicked radio buttons
     var layerList = document.getElementById('menu');
     var inputs = layerList.getElementsByTagName('input');
-
     switchLayer = (layer) => {
         var layerId = layer.target.id;
         map.setStyle('mapbox://styles/mapbox/' + layerId);
     }
-
     for(var i = 0; i < inputs.length; i++) {
         inputs[i].onclick = switchLayer;
     }
