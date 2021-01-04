@@ -114,15 +114,15 @@ body {
 
 @-webkit-keyframes zoom {
   100% {
-    -webkit-transform: scale(1.9);
-            transform: scale(1.9);
+    -webkit-transform: scale(1.5);
+            transform: scale(1.5);
   }
 }
 
 @keyframes zoom {
   100% {
-    -webkit-transform: scale(1.9);
-            transform: scale(1.9);
+    -webkit-transform: scale(1.5);
+            transform: scale(1.5);
   }
 }
 /*# sourceMappingURL=main.css.map */

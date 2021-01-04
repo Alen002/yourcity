@@ -1,0 +1,29 @@
+/* .img-wrapper {
+  width: auto;
+  height: 300px;
+  object-fit: cover;
+}
+ */
+body {
+  background-color: #fff;
+}
+
+.img-wrapper {
+  max-width: auto;
+  max-height: 300px;
+  object-fit: cover;
+}  
+
+.card {
+  background-color: RGBA(0, 0, 0, 0.04);
+  
+}
+
+.card {
+  overflow: hidden;
+}
+
+.card img:hover {
+  transition: transform 1s ease;
+  transform:scale(1.3);
+}

@@ -1,14 +1,17 @@
 <%- include("../partials/header") %>
-    <% if(currentUser) { %>
-        <a href="/new">Add a new city</a></br>
-    <% } %>
+<!-- Only appears when user is logged in-->
+<% if(currentUser) { %>
+    <a href="/new">Add a new city</a></br>
+<% } %>
+<link rel="stylesheet" type="text/css" href="/styles/index.css" media="screen"/>    
+<style>
+    body { margin: 0; padding: 0; }
+    #map { position: relative; top: 0; bottom: 0; width: 100%; height: 400px; }
+</style>
 
-    <style>
-        body { margin: 0; padding: 0; }
-        #map { position: relative; top: 0; bottom: 0; width: 100%; height: 400px; }
-    </style>
 
     <!-- Mapbox js code for displaying the map with the location -->
+<div class="container-fluid">    
     <div id='map' class="col-xl-12" ></div></br><!-- style='width: 400px; height: 400px'  -->
     <div id="menu">
         <input type="radio" id="streets-v11" name="streets>
@@ -17,20 +20,30 @@
         <label for="female">Satellite View</label><br>
     </div>
     </br>
+</div>
+    <!-- End of mapbox -->
 
-    Display cities
-    <% cities.forEach((cities) => { %>
-        <div class="cities-background">
-            <h2><%= cities.city %></h2>
-            <h2><%= cities.country %></h2>
-            <h5>Posted by <%= cities.author.username %></h5>
-            <img src="<%= cities.images %>">
-            <p><%= cities.description %></p>
-            <div>
-                <a href="/cities/<%= cities._id %>" class="btn btn-primary">More Details</a>
+
+<div class="container-fluid">
+    <h5>Favorite Cities</h5>
+    <div class="row"> 
+        <% cities.forEach((cities) => { %>
+            <div class="col col-md-6 col-lg-6 col-xl-3 my-2">
+                <div class="card text-center p-2">
+                    <!-- <div class="cities-background"> -->
+                        <h4><%= cities.city %></h2>
+                        <!-- <h7>Posted by <%= cities.author.username %></h7> -->
+                        <img class="img-wrapper" src="<%= cities.images %>">
+                        <div>
+                            <a href="/cities/<%= cities._id %>" class="btn btn-outline-primary mt-2">More Details</a>
+                        </div>
+                    <!-- </div> -->
+                </div>
             </div>
-        </div>
-    <% }) %>
+        <% }) %>
+    </div>
+</div>
+
 <%- include("../partials/footer") %>
 
 <script>
@@ -41,10 +54,9 @@
     var map = new mapboxgl.Map({
         container: 'map',
         style: `mapbox://styles/mapbox/${display}`,
-        center: [-103.59179687498357, 40.66995747013945],   // 11.559149726469974, 104.84623146087296 //
+        center: [-103.59179687498357, 40.66995747013945], 
         zoom: 3
-    });
-    
+    });    
     // Switch view to street or sattelite based on clicked radio buttons
     var layerList = document.getElementById('menu');
     var inputs = layerList.getElementsByTagName('input');
@@ -53,7 +65,6 @@
         var layerId = layer.target.id;
         map.setStyle('mapbox://styles/mapbox/' + layerId);
     }
-
     for(var i = 0; i < inputs.length; i++) {
         inputs[i].onclick = switchLayer;
     }
@@ -64,13 +75,6 @@
         new mapboxgl.Marker()
         .setLngLat(result.geolocation.coordinates) 
         .addTo(map)
-
-        // Create popup with name of the city
-        /* new mapboxgl.Popup({ closeOnClick: false })   
-        .setLngLat(result.geolocation.coordinates)
-        .setHTML(`<p>${result.city}</p>`)   
-        .addTo(map); */
     });
-
 </script>
 
