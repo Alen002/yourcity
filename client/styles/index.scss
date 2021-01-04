@@ -13,6 +13,7 @@ body {
 	max-width: auto;
 	max-height: 300px;
 	border-radius: 10px;
+	object-fit: cover;
 	// When cursor not pointing at image then zoom back
 	transition: 0.75s;
 	cursor: zoom-in;

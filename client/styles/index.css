@@ -12,6 +12,8 @@ body {
   max-width: auto;
   max-height: 300px;
   border-radius: 10px;
+  -o-object-fit: cover;
+     object-fit: cover;
   -webkit-transition: 0.75s;
   transition: 0.75s;
   cursor: -webkit-zoom-in;
