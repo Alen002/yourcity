@@ -14,11 +14,11 @@ Posted by <%= cities.author.username %></br>
 </div>
 
 <!-- Coordinates for displaying the marker on mapbox-->
-Latitude:<div id="latitude"> <%= cities.geolocation.coordinates[1] %> </div>
-Longitude:<div id="longitude"> <%= cities.geolocation.coordinates[0] %> </div>
+<div id="latitude" class="display"><%= cities.geolocation.coordinates[1] %> </div>
+<div id="longitude" class="display"> <%= cities.geolocation.coordinates[0] %> </div>
 
 <!-- Map display -->
-<div id='map' class="col-xl-12" style='width: 400px; height: 400px'></div></br>
+<div id='map' class="col-xl-12" style='width: 400px; height: 300px'></div></br>
 
 <!-- Start of radio buttons to switch between street and satellite view -->
 <div id="menu">
@@ -74,18 +74,20 @@ Longitude:<div id="longitude"> <%= cities.geolocation.coordinates[0] %> </div>
  </div> 
 <!-- End of display reviews entered by users -->
 
-<!-- Start of comments section -->
-<h5>Comments</h5>
-<p><%= cities.description %></p>
-<p>
-    <% cities.comments.forEach((user) => { %>
-        <p> Date: <%= user.date %></br>
-        Author: <%= user.author.username%></br>
-        Comment: <%= user.comment %></br>        
-        </p>
-    <% }) %>
-</p>
-<!-- End of comments section -->
+<!-- Authorization - Only the owner of the city can update od delete it -->
+<% if(currentUser && cities.author.equals(currentUser._id)) { %>
+    <!-- DELETE data entry -->
+    <form action="/cities/<%= cities._id %>?_method=DELETE" method="POST">
+        <button class="btn btn-danger mb-2">DELETE CITY</button>
+    </form>
+    <!-- UPDATE data entry -->
+    <form action="/cities/<%= cities._id %>/edit" method="GET">
+        <button class="btn btn-secondary mb-2">UPDATE CITY</button>
+    </form>    
+<% } %>
+
+<a href="/cities">Back to cities</a></br>
+<%- include("../partials/footer") %>
 
 <script>
     // Get coordinates   
@@ -123,25 +125,22 @@ Longitude:<div id="longitude"> <%= cities.geolocation.coordinates[0] %> </div>
     <% } %></br>
 Author of the city: <%= cities.author._id %> -->
     
-<!-- Authorization - Only the owner of the city can update od delete it -->
-<% if(currentUser && cities.author.equals(currentUser._id)) { %>
-    <!-- DELETE data entry -->
-    <form action="/cities/<%= cities._id %>?_method=DELETE" method="POST">
-        <button class="btn btn-danger mb-2">DELETE CITY</button>
-    </form>
-    <!-- UPDATE data entry -->
-    <form action="/cities/<%= cities._id %>/edit" method="GET">
-        <button class="btn btn-secondary mb-2">UPDATE CITY</button>
-    </form>    
-<% } %>
-
 <!-- ADD new comment - Everyone can add comments who is logged in -->
-<% if(currentUser) { %>
+<!-- <% if(currentUser) { %>
     <form action="/cities/<%= cities._id %>/comments/new" method="GET">
         <button class="btn btn-secondary mb-2">New Comment</button>
     </form>
-<% } %>
+<% } %> -->
 
-<a href="/cities">Back to cities</a></br>
-
-<%- include("../partials/footer") %>
+<!-- Start of comments section -->
+<!-- <h5>Comments</h5>
+<p><%= cities.description %></p>
+<p>
+    <% cities.comments.forEach((user) => { %>
+        <p> Date: <%= user.date %></br>
+        Author: <%= user.author.username%></br>
+        Comment: <%= user.comment %></br>        
+        </p>
+    <% }) %>
+</p> -->
+<!-- End of comments section -->
