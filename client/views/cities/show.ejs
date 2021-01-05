@@ -3,88 +3,117 @@
 <link rel="stylesheet" type="text/css" href="/styles/show.css" media="screen"/>
 <script type="text/javascript" src="/script/script.js"></script>
 
-<img src="<%= cities.images %>">
-<h2><%= cities.city %></h2>
-<h3><%= cities.country %></h3>
-Posted by <%= cities.author.username %></br>
 
 
-<div>
-    <%= cities.description %>
-</div>
 
-<!-- Coordinates for displaying the marker on mapbox-->
-<div id="latitude" class="display"><%= cities.geolocation.coordinates[1] %> </div>
-<div id="longitude" class="display"> <%= cities.geolocation.coordinates[0] %> </div>
 
-<!-- Map display -->
-<div id='map' class="col-xl-12" style='width: 400px; height: 300px'></div></br>
 
-<!-- Start of radio buttons to switch between street and satellite view -->
-<div id="menu">
-    <input type="radio" id="streets-v11" name="streets>
-    <label for="streets">Street View</label>
-    <input type="radio" id="satellite-v9" name="streets>
-    <label for="female">Satellite View</label><br>
-</div>
-</br>
-<!-- End of radio buttons -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 first-col mt-2 card">
+            <img src="<%= cities.images %>">
+            <h5><%= cities.city %></h5>
+            <h5><%= cities.country %></h5>
+            <h6>Posted by <%= cities.author.username %></h6>
+            <div><%= cities.description %></div>
+            <!-- Coordinates for displaying the marker on mapbox-->
+            <div id="latitude" class="display"><%= cities.geolocation.coordinates[1] %> </div>
+            <div id="longitude" class="display"> <%= cities.geolocation.coordinates[0] %> </div>
+            <!-- Display mapbox map -->
+            <div id='map' class="map-style" ></div></br>   
+            <!-- Start of radio buttons to switch between street and satellite view -->
+            <div id="menu">
+                <input type="radio" id="streets-v11" name="streets>
+                <label for="streets">Street View</label>
+                <input type="radio" id="satellite-v9" name="streets>
+                <label for="female">Satellite View</label><br>
+            </div>
+            </br>
+            <!-- End of radio buttons -->
+        </div>
 
-<!-- Start of review section for entering a review -->
-<h4>Leave a Rating</h4>
-<form action="/cities/<%= cities._id %>/reviews" method="POST">
-    <!-- Rating from 1 to 5 -->
-    <label class="form-label" for="rating">Rating</label>
-    <!-- Star rating -->
-    <fieldset class="starability-basic">
-        <legend>First rating:</legend>
-        <input type="radio" id="first-rate1" name="rating" value="1" />
-        <label for="first-rate1" title="Terrible">1 star</label>
-        <input type="radio" id="first-rate2" name="rating" value="2" />
-        <label for="first-rate2" title="Not good">2 stars</label>
-        <input type="radio" id="first-rate3" name="rating" value="3" />
-        <label for="first-rate3" title="Average">3 stars</label>
-        <input type="radio" id="first-rate4" name="rating" value="4" />
-        <label for="first-rate4" title="Very good">4 stars</label>
-        <input type="radio" id="first-rate5" name="rating" value="5" />
-        <label for="first-rate5" title="Amazing">5 stars</label>
-    </fieldset>
-    <!-- Review text -->
-    <label class="form-label" for="review">Review</label></br>
-    <textarea class="form-control" type="text" name="review" placeholder="Your review" required></textarea></br>
-    
-    <button type="submit" class="btn btn-success mb-2">Submit</button>
-</form>
-<!-- End of review section for entering a review -->
 
-<!-- Display reviews entered by users -->
-<div class="reviews">
-    <div class="container-fluid">
-        <h4>Reviews</h4>
-        <% cities.reviews.forEach((review) => { %>
-            <h6><%= review.author.username%></h6>
-            <!-- Rating: <%= review.rating %></br> -->
-            <!-- Star rating --> 
-            <p class="starability-result" data-rating="<%= review.rating %>">
-                Rated: <%= review.rating %> stars
-            </p>
-            <%= review.review %></br>       
-        <% }) %>           
+
+
+
+
+
+
+
+
+
+
+        <div class="col col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 mt-2">
+            <!-- Start of review section for entering a review -->
+            <form action="/cities/<%= cities._id %>/reviews" method="POST">
+                <!-- Rating from 1 to 5 -->
+                <label class="form-label" for="rating">Rating</label>
+                <!-- Star rating -->
+                <fieldset class="starability-basic">
+                    <legend>First rating:</legend>
+                    <input type="radio" id="first-rate1" name="rating" value="1" />
+                    <label for="first-rate1" title="Terrible">1 star</label>
+                    <input type="radio" id="first-rate2" name="rating" value="2" />
+                    <label for="first-rate2" title="Not good">2 stars</label>
+                    <input type="radio" id="first-rate3" name="rating" value="3" />
+                    <label for="first-rate3" title="Average">3 stars</label>
+                    <input type="radio" id="first-rate4" name="rating" value="4" />
+                    <label for="first-rate4" title="Very good">4 stars</label>
+                    <input type="radio" id="first-rate5" name="rating" value="5" />
+                    <label for="first-rate5" title="Amazing">5 stars</label>
+                </fieldset>
+                <!-- Review text -->
+                <label class="form-label" for="review">Review</label></br>
+                <textarea class="form-control" type="text" name="review" placeholder="Your review" required></textarea></br>
+                <button type="submit" class="btn btn-outline-success mb-2">Submit</button>
+            </form>
+            <!-- End of review section for entering a review -->
+
+            <!-- Display reviews entered by users -->
+            <div class="reviews">
+                    <h4>Reviews</h4>
+                    <% cities.reviews.forEach((review) => { %>
+                        <h6><%= review.author.username%></h6>
+                        <!-- Rating: <%= review.rating %></br> -->
+                        <!-- Star rating --> 
+                        <p class="starability-result" data-rating="<%= review.rating %>">
+                            Rated: <%= review.rating %> stars
+                        </p>
+                        <%= review.review %></br>       
+                    <% }) %>           
+            </div> 
+            <!-- End of display reviews entered by users -->
+
+            <!-- Authorization - Only the owner of the city can update od delete it -->
+            <% if(currentUser && cities.author.equals(currentUser._id)) { %>
+            <p>
+                <!-- DELETE data entry -->
+                <form action="/cities/<%= cities._id %>?_method=DELETE" method="POST">
+                    <button class="btn btn-outline-danger mb-2">DELETE CITY</button>
+                </form>
+                <!-- UPDATE data entry -->
+                <form action="/cities/<%= cities._id %>/edit" method="GET">
+                    <button class="btn btn-outline-primary mb-2">UPDATE CITY</button>
+                </form>   
+            </p> 
+            <% } %>
+        </div>    
+
+
+
+
+
     </div>
- </div> 
-<!-- End of display reviews entered by users -->
+</div>
 
-<!-- Authorization - Only the owner of the city can update od delete it -->
-<% if(currentUser && cities.author.equals(currentUser._id)) { %>
-    <!-- DELETE data entry -->
-    <form action="/cities/<%= cities._id %>?_method=DELETE" method="POST">
-        <button class="btn btn-danger mb-2">DELETE CITY</button>
-    </form>
-    <!-- UPDATE data entry -->
-    <form action="/cities/<%= cities._id %>/edit" method="GET">
-        <button class="btn btn-secondary mb-2">UPDATE CITY</button>
-    </form>    
-<% } %>
+
+
+
+
+
+
+
+
 
 <a href="/cities">Back to cities</a></br>
 <%- include("../partials/footer") %>

@@ -1,3 +1,29 @@
+body {
+	background-color: white;
+}
+
 .display {
 	display: none;
-  }
+}
+
+.card {
+	border-style: none
+}
+
+img {	
+		max-width: auto;
+		max-height: 400px;
+		border-radius: 10px;
+		object-fit: cover;		
+}
+
+.map-style {
+	max-width: auto;
+	height: 400px;	
+	border-radius: 10px;
+}
+ 
+.first-col {
+	/* background-color: green; */
+	
+}
