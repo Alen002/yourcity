@@ -3,19 +3,14 @@
 <link rel="stylesheet" type="text/css" href="/styles/show.css" media="screen"/>
 <script type="text/javascript" src="/script/script.js"></script>
 
-
-
-
-
-
 <div class="container-fluid">
     <div class="row">
         <div class="col col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 first-col mt-2 card">
             <img src="<%= cities.images %>">
-            <h5><%= cities.city %></h5>
+            <h5 class="mt-2"><%= cities.city %></h5>
             <h5><%= cities.country %></h5>
             <h6>Posted by <%= cities.author.username %></h6>
-            <div><%= cities.description %></div>
+            <div class="mb-2"><%= cities.description %></div>
             <!-- Coordinates for displaying the marker on mapbox-->
             <div id="latitude" class="display"><%= cities.geolocation.coordinates[1] %> </div>
             <div id="longitude" class="display"> <%= cities.geolocation.coordinates[0] %> </div>
@@ -31,17 +26,6 @@
             </br>
             <!-- End of radio buttons -->
         </div>
-
-
-
-
-
-
-
-
-
-
-
 
         <div class="col col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 mt-2">
             <!-- Start of review section for entering a review -->
@@ -98,22 +82,8 @@
             </p> 
             <% } %>
         </div>    
-
-
-
-
-
     </div>
 </div>
-
-
-
-
-
-
-
-
-
 
 <a href="/cities">Back to cities</a></br>
 <%- include("../partials/footer") %>
