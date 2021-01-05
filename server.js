@@ -14,6 +14,7 @@ const app = express();
 const sassMiddleware = require('node-sass-middleware');
 const expressSanitizer = require('express-sanitizer');
 const bodyParser = require('body-parser');
+const mongoSanitize = require('express-mongo-sanitize');
 
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
@@ -55,6 +56,7 @@ app.use(express.static('client'));
 app.use(express.static('public'));
 app.use(methodOverride('_method')); // for passing argument, eg. PUT, DELETE
 app.use(expressSanitizer()); // for avoiding script injections
+app.use(mongoSanitize()); // for avoiding sql injections
 
 
 // Automatically pass currentUser to every view
