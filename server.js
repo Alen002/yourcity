@@ -3,7 +3,7 @@ if(process.env.NODE_ENV !== 'production') {
 }
 
 var path = require('path');
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 5000;
 dotenv = require('dotenv').config();
 
 const express = require('express');
@@ -15,6 +15,7 @@ const sassMiddleware = require('node-sass-middleware');
 const expressSanitizer = require('express-sanitizer');
 const bodyParser = require('body-parser');
 const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require("helmet");
 
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
@@ -48,6 +49,59 @@ const url = 'mongodb://localhost/CityDB'
 mongoose.connect(url, { useUnifiedTopology: true, useNewUrlParser: true });
 const con = mongoose.connection;
 con.on('open', () => console.log('Connected to mongodb'));
+
+// Helmet content security policy
+const scriptSrcUrls = [
+    "https://stackpath.bootstrapcdn.com/",
+    "https://api.tiles.mapbox.com/",
+    "https://api.mapbox.com/",
+    "https://kit.fontawesome.com/",
+    "https://cdnjs.cloudflare.com/",
+    "https://cdn.jsdelivr.net",
+];
+const styleSrcUrls = [
+    "https://kit-free.fontawesome.com/",
+    "https://stackpath.bootstrapcdn.com/",
+    "https://api.mapbox.com/",
+    "https://api.tiles.mapbox.com/",
+    "https://fonts.googleapis.com/",
+    "https://use.fontawesome.com/",
+];
+const connectSrcUrls = [
+    "https://api.mapbox.com/",
+    "https://a.tiles.mapbox.com/",
+    "https://b.tiles.mapbox.com/",
+    "https://events.mapbox.com/",
+];
+const fontSrcUrls = [];
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            defaultSrc: [],
+            connectSrc: ["'self'", ...connectSrcUrls],
+            scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+            styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+            workerSrc: ["'self'", "blob:"],
+            objectSrc: [],
+            imgSrc: [
+                "'self'",
+                "blob:",
+                "data:",
+                `https://res.cloudinary.com/${process.env.NAME}/`, //SHOULD MATCH YOUR CLOUDINARY ACCOUNT! 
+                "https://images.unsplash.com/",
+            ],
+            fontSrc: ["'self'", ...fontSrcUrls],
+        },
+    })
+);
+
+// disable content security policy of helmet
+/* app.use(
+    helmet({
+      contentSecurityPolicy: false,
+    })
+); */
+
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.use(bodyParser.json());
 app.use(express.json());
@@ -57,7 +111,6 @@ app.use(express.static('public'));
 app.use(methodOverride('_method')); // for passing argument, eg. PUT, DELETE
 app.use(expressSanitizer()); // for avoiding script injections
 app.use(mongoSanitize()); // for avoiding sql injections
-
 
 // Automatically pass currentUser to every view
 app.use((req, res, next) => {
@@ -72,6 +125,7 @@ app.use((req, res, next) => {
 // User Session
 const session = require('express-session');
 app.use(session ({
+        name: '_ga',
         secret: 'Do not tell anybody',
         resave: false,
         saveUninitialized: false
