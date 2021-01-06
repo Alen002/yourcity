@@ -71,14 +71,14 @@
             <!-- Authorization - Only the owner of the city can update od delete it -->
             <% if(currentUser && cities.author.equals(currentUser._id)) { %>
             <p>
-                <!-- DELETE data entry -->
-                <form action="/cities/<%= cities._id %>?_method=DELETE" method="POST">
-                    <button class="btn btn-outline-danger mb-2">DELETE CITY</button>
-                </form>
                 <!-- UPDATE data entry -->
                 <form action="/cities/<%= cities._id %>/edit" method="GET">
                     <button class="btn btn-outline-primary mb-2">UPDATE CITY</button>
                 </form>   
+                <!-- DELETE data entry -->
+                <form action="/cities/<%= cities._id %>?_method=DELETE" method="POST">
+                    <button class="btn btn-outline-danger mb-2">DELETE CITY</button>
+                </form>
             </p> 
             <% } %>
         </div>    
