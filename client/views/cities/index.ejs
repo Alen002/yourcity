@@ -1,7 +1,9 @@
 <%- include("../partials/header") %>
 <!-- Only appears when user is logged in-->
 <% if(currentUser) { %>
-    <a href="/new">Add a new city</a></br>
+    <div class="text-center mt-2 mb-2">
+        <a href="/new"><button class="btn btn-outline-primary"> Enter New City</button></a></br>
+    </div>
 <% } %>
 <link rel="stylesheet" type="text/css" href="/styles/index.css" media="screen"/>    
 <style>
