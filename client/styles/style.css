@@ -8,6 +8,20 @@ body {
   background-color: white;
 }
 
+.navbar-toggler,
+.navbar-toggler:focus,
+.navbar-toggler:active,
+.navbar-toggler-icon:focus {
+  outline: none;
+  border: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+.nav-item {
+  text-align: center;
+}
+
 /* Start of star ratings */
 .starability-result {
   position: relative;
