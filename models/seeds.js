@@ -33,7 +33,8 @@ const cities = [
         city: 'Singapore',
         country: 'Singapore',
         images: 'https://cdn.pixabay.com/photo/2017/04/11/03/41/singapore-2220473_960_720.jpg',
-        author: '5fa7be03fcbe3a1b3ca3800d'
+        author: '5fa7be03fcbe3a1b3ca3800d',
+        Test: test
     }),
 ];
 
