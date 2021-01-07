@@ -3,6 +3,6 @@ uploads
 .env
 .DS_Store
 images
-seeds.js
+models/seeds.js
 
 
