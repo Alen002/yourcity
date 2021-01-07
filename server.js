@@ -53,6 +53,8 @@ con.on('open', () => console.log('Connected to mongodb'));
 // Helmet content security policy
 const scriptSrcUrls = [
     "https://stackpath.bootstrapcdn.com/",
+    "https://code.jquery.com/",
+    "https://cdn.jsdelivr.net/",
     "https://api.tiles.mapbox.com/",
     "https://api.mapbox.com/",
     "https://kit.fontawesome.com/",
