@@ -9,19 +9,29 @@ body {
 }
 
 // Remove border of navbar-toggler
-.navbar-toggler,
-.navbar-toggler:focus,
-.navbar-toggler:active,
-.navbar-toggler-icon:focus {
-  outline: none;
-  border: none;
-  box-shadow: none;
+  .navbar-toggler,
+  .navbar-toggler:focus,
+  .navbar-toggler:active,
+  .navbar-toggler-icon:focus {
+    outline: none;
+    border: none;
+    box-shadow: none;
 }
 
 .nav-item{
-  text-align: center;
+    text-align: center;
 }
 
+.search-view {	
+    max-width: auto;
+    max-height: 400px;
+    border-radius: 10px;
+    object-fit: cover;		
+}
+
+.card {
+    border-style: none;
+}
 
 /* Start of star ratings */
 .starability-result {

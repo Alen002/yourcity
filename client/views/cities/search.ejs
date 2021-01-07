@@ -1,27 +1,28 @@
 <%- include("../partials/header") %>
-
-
-<h3>Search for a city</h3>    
+<!-- Search form -->
+<div class="container-fluid">
+    <h3>Search for a city</h3>    
         <form action="/cities/search" method="POST">
             <input type="text" name="searchCity" placeholder="search" class="form-control mb-2">
-            <a href="/cities" class="btn btn-secondary mb-2">Cancel</a>
-            <button type="submit" class="btn btn-primary mb-2">Submit</button>
+            <button type="submit" class="btn btn-outline-primary mb-2">Search</button>
+            <a href="/cities" class="btn btn-outline-dark mb-2">Cancel</a>
         </form>
     </div>
-    <% citySearch.forEach((cities) => { %>
-        <div>
-            <h2><%= cities.city %></h2>
-            <h2><%= cities.country %></h2>
-            <h2><%= cities.description %></h2>
-            <img src="<%= cities.images %>">
+</div>
+
+<!-- Search results -->
+<% citySearch.forEach((cities) => { %>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col col-12 card my-2">
+                <h4><%= cities.city %></h4>
+                <h6><%= cities.country %></h6>
+                <img class="search-view" src="<%= cities.images %>"></br>
+                <a href="/cities "><button class="btn btn-outline-primary text-center">Details</button></a>       
+            </div>
         </div>
-    <% }) %>
-    
-
-
-
-    <a href="/cities">Back</a>
+    </div>
+<% }) %>
     
     
 
-<%- include("../partials/footer") %>
