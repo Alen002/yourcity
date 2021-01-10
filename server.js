@@ -45,15 +45,14 @@ const seed = require('./models/seeds');
 
 // MongoDb and mongoose
 const mongoose = require('mongoose');
-/* const url = 'mongodb://localhost/CityDB' */
-
-const url = process.env.MONGODB;
+const url = 'mongodb://localhost/CityDB'
+/* const url = process.env.MONGODB; */
 
 mongoose.connect(url, { 
     useUnifiedTopology: true, 
     useNewUrlParser: true,
-    useCreateIndex: true, // test
-    useFindAndModify: false // test
+    useCreateIndex: true, 
+    useFindAndModify: false
 
 });
 const con = mongoose.connection;
@@ -137,11 +136,31 @@ app.use((req, res, next) => {
 
 // User Session
 const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+
+// Store sessions in the db
+const store = new MongoStore({
+    url: url,  // Production mode url is mongodb atlas, development mode is localhost
+    secret: process.env.SECRETSESSION,
+    touchAfter: 24 * 60 * 60 // Avoid unnecessary resaves/updates on the db                               
+});
+
+store.on('error', (e) => {
+    console.log('some error with the SESSION STORE', e);
+});
+
 app.use(session ({
+        store,
         name: '_ga',
-        secret: 'Do not tell anybody',
+        secret: process.env.SECRETSESSION,
         resave: false,
-        saveUninitialized: false
+        saveUninitialized: true,
+        cookie: {
+            httpOnly: true,
+            /* secure: true, */
+            expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+            maxAge: 1000 * 60 * 60 * 24 * 7
+        }
     })
 );
 
