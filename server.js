@@ -45,8 +45,17 @@ const seed = require('./models/seeds');
 
 // MongoDb and mongoose
 const mongoose = require('mongoose');
-const url = 'mongodb://localhost/CityDB'
-mongoose.connect(url, { useUnifiedTopology: true, useNewUrlParser: true });
+/* const url = 'mongodb://localhost/CityDB' */
+
+const url = process.env.MONGODB;
+
+mongoose.connect(url, { 
+    useUnifiedTopology: true, 
+    useNewUrlParser: true,
+    useCreateIndex: true, // test
+    useFindAndModify: false // test
+
+});
 const con = mongoose.connection;
 con.on('open', () => console.log('Connected to mongodb'));
 
@@ -75,6 +84,7 @@ const connectSrcUrls = [
     "https://a.tiles.mapbox.com/",
     "https://b.tiles.mapbox.com/",
     "https://events.mapbox.com/",
+    "https://cloud.mongodb.com/"
 ];
 const fontSrcUrls = [];
 app.use(
