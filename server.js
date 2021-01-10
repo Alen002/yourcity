@@ -45,7 +45,7 @@ const seed = require('./models/seeds');
 
 // MongoDb and mongoose
 const mongoose = require('mongoose');
-const url = 'mongodb://localhost/CityDB'
+const url = 'mongodb://localhost/CityDB';
 /* const url = process.env.MONGODB; */
 
 mongoose.connect(url, { 
