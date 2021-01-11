@@ -68,7 +68,14 @@ const scriptSrcUrls = [
     "https://kit.fontawesome.com/",
     "https://cdnjs.cloudflare.com/",
     "https://cdn.jsdelivr.net",
+<<<<<<< HEAD
     "http://localhost:5000/script/script.js"
+=======
+    "http://yourcities.herokuapp.com",
+    "http://localhost:5000/script/script.js",   
+    "https://cdnjs.cloudflare.com",
+    "https://cdn.jsdelivr.net"
+>>>>>>> 3b18a09... deployment
 ];
 const styleSrcUrls = [
     "https://kit-free.fontawesome.com/",
