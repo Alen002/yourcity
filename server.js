@@ -39,14 +39,14 @@ const mapbox = require('./routes/mapbox');
 /* const {storage} = require('./cloudinary/index'); */
 
 // seeds.js file will run when the server starts
-const seed = require('./models/seeds'); 
+/* const seed = require('./models/seeds');  */
 // If seed() runs then the commment id needs to be added manually to the city array
 /* seed(); */
 
 // MongoDb and mongoose
 const mongoose = require('mongoose');
-const url = 'mongodb://localhost/CityDB';
-/* const url = process.env.MONGODB; */
+/* const url = 'mongodb://localhost/CityDB'; */
+const url = process.env.MONGODB;
 
 mongoose.connect(url, { 
     useUnifiedTopology: true, 
@@ -62,20 +62,13 @@ con.on('open', () => console.log('Connected to mongodb'));
 const scriptSrcUrls = [
     "https://stackpath.bootstrapcdn.com/",
     "https://code.jquery.com/",
-    "https://cdn.jsdelivr.net/",
     "https://api.tiles.mapbox.com/",
     "https://api.mapbox.com/",
     "https://kit.fontawesome.com/",
     "https://cdnjs.cloudflare.com/",
     "https://cdn.jsdelivr.net",
-<<<<<<< HEAD
-    "http://localhost:5000/script/script.js"
-=======
     "http://yourcities.herokuapp.com",
     "http://localhost:5000/script/script.js",   
-    "https://cdnjs.cloudflare.com",
-    "https://cdn.jsdelivr.net"
->>>>>>> 3b18a09... deployment
 ];
 const styleSrcUrls = [
     "https://kit-free.fontawesome.com/",
@@ -89,6 +82,7 @@ const connectSrcUrls = [
     "https://api.mapbox.com/",
     "https://a.tiles.mapbox.com/",
     "https://b.tiles.mapbox.com/",
+    "https://*.tiles.mapbox.com",
     "https://events.mapbox.com/",
     "https://cloud.mongodb.com/"
 ];
@@ -101,6 +95,7 @@ app.use(
             scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
             styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
             workerSrc: ["'self'", "blob:"],
+            childSrc: ["blob:"],
             objectSrc: [],
             imgSrc: [
                 "'self'",
@@ -192,7 +187,7 @@ app.use(sassMiddleware({
 app.set('views', path.join(__dirname, '/client/views'));
 
 
-const { reset } = require('nodemon');
+/* const { reset } = require('nodemon'); */
 const { resourceUsage } = require('process');
 const comment = require('./models/comment');
 const { authenticate } = require('passport');
