@@ -31,10 +31,10 @@
             <!-- Start of review section for entering a review -->
             <form action="/cities/<%= cities._id %>/reviews" method="POST">
                 <!-- Rating from 1 to 5 -->
-                <label class="form-label" for="rating">Rating</label>
+                <label class="form-label" for="rating">Give a Rating</label>
                 <!-- Star rating -->
                 <fieldset class="starability-basic">
-                    <legend>First rating:</legend>
+                   <!--  <legend>Rate and Review City</legend> -->
                     <input type="radio" id="first-rate1" name="rating" value="1" />
                     <label for="first-rate1" title="Terrible">1 star</label>
                     <input type="radio" id="first-rate2" name="rating" value="2" />
@@ -47,7 +47,7 @@
                     <label for="first-rate5" title="Amazing">5 stars</label>
                 </fieldset>
                 <!-- Review text -->
-                <label class="form-label" for="review">Review</label></br>
+                <label class="form-label" for="review">Review the City</label></br>
                 <textarea class="form-control" type="text" name="review" placeholder="Your review" required></textarea></br>
                 <button type="submit" class="btn btn-outline-success mb-2">Submit</button>
             </form>
@@ -55,7 +55,8 @@
 
             <!-- Display reviews entered by users -->
             <div class="reviews">
-                    <h4>Reviews</h4>
+                    </br>
+                    <h5>Reviews</h5>
                     <% cities.reviews.forEach((review) => { %>
                         <h6><%= review.author.username%></h6>
                         <!-- Rating: <%= review.rating %></br> -->
